@@ -42,15 +42,25 @@ export type Photo = {
   date: string;              // ISO date, from EXIF DateTimeOriginal or the post date
   light: 'night' | 'day';    // drives the surface
   series?: string;           // slug into content/series.ts
-  author: 'mariana' | { name: string; handle?: string }; // who pressed the shutter
+  author: 'mariana' | 'unconfirmed' | { name: string; handle?: string }; // who pressed the shutter
+  source: 'reference' | 'mariana'; // Instagram mood material, or a photo she gave us
+  others: number;            // identifiable people besides her, counted by a human
   people?: { consent: true }[]; // one entry per identifiable friend, only when they said yes
 };
 ```
 
-The array order is the Pile's order. `author` and `people` exist because the
-reference shows at least one photo by someone else (033) and many friends.
-A build-time check fails if a photo has identifiable people without consent
-entries. A human records this, the check only enforces it.
+The types live in `content/types.ts`. `author`, `others` and `people` exist
+because the reference shows at least one photo by someone else (033) and many
+friends. A human records them; `content/check.ts` only enforces them, when
+`content/photos.ts` is evaluated, so `next build` and `next dev` both stop:
+
+- Any build fails if one of her photos (`source: 'mariana'`) has fewer consent
+  entries than `others`, or unconfirmed authorship, or an unknown series.
+- A public build (`ANAIRAM_PUBLIC=1`, only after her yes) also fails on any
+  reference photo and any unconfirmed author.
+
+The Pile's order is computed by `content/order.ts`: newest first, with each
+series kept together at the place of its newest photo and chronological inside.
 
 ```ts
 // content/series.ts (future)
@@ -92,6 +102,9 @@ her originals ──► scripts/ingest.ts ──► content/photos/*.jpg ──�
 | `/foto/[slug]` | Static (`generateStaticParams`) | prev/next FlashCut, `Wordmark` |
 | `/sobre` | Static | `Wordmark` |
 
+- `/?f=07` is rewritten by `proxy.ts` to the prerendered `/f/07`, keeping the
+  address. A shared link opens on its print without JavaScript, and every start
+  frame is still static. Out-of-range frames fall back to the first print.
 - The server renders the Pile's top print and the next two as real `<img>`s.
   The island hydrates on top, so the first view is complete without JS.
 - The first print is the LCP element: `priority`, a correct `sizes`, and a blur
@@ -104,15 +117,18 @@ her originals ──► scripts/ingest.ts ──► content/photos/*.jpg ──�
 app/
   layout.tsx          fonts, header, footer, data-surface root
   page.tsx            the Pile (server: data → <Pile photos={…} />)
+  f/[frame]/page.tsx  the Pile from frame N, reached through proxy.ts
   tudo/page.tsx
   foto/[slug]/page.tsx
   sobre/page.tsx
   not-found.tsx
+proxy.ts             ?f=NN → /f/NN
 components/
   brand/   Wordmark, DateStamp, FrameCounter
-  pile/    Pile, Print, FlashCut, hooks.ts (usePileNavigation, useFlashGate)
-  ui/      USVA / shadcn output
-content/   photos.ts, series.ts, photos/*.jpg
+  pile/    Pile, Caption, FlashLayer, FlashLink, hooks.ts
+  site/    header, footer, ContactSheet, Surface, FlashToggle
+  ui/      USVA / shadcn output (Button, ToggleGroup, Chip)
+content/   types.ts, photos.ts, series.ts, order.ts, check.ts, photos/*.jpg
 scripts/   ingest.ts
 ```
 

@@ -21,7 +21,9 @@ can send to a friend.
 
 Photos can belong to a **série** (a night or a trip, such as "carnaval 2023/rj"),
 named by her. Series are a filter on `/tudo` and a quiet label on the photo
-page. They are not a separate route in v1.
+page, which links to `/tudo?serie=…`. They are not a separate route in v1. The
+selected series chip is an ink fill plus an underline, because the light filter
+next to it already holds the screen's one magenta.
 
 ## 2. The home: the Pile
 
@@ -190,8 +192,9 @@ WCAG 2.2 AA is the minimum.
 
 ### Without JavaScript
 
-The home renders the first photo, its caption, and plain links to `anterior`,
-`próxima` (as `/foto/…` URLs), and `tudo`. Everything is reachable.
+The home renders the first photo (or the one in `?f=`, through the proxy), its
+caption, and plain links to `anterior`, `próxima` (as `/foto/…` URLs), and
+`tudo`. Everything is reachable.
 
 ## 6. Craft details (the awards level)
 

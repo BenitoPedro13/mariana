@@ -23,7 +23,7 @@ import {
   useWheelStep,
 } from "@/components/pile/hooks";
 import { Button } from "@/components/ui/button";
-import type { Photo } from "@/content/photos";
+import type { Photo } from "@/content/types";
 import { develop, flash, markCut } from "@/lib/flash";
 import { useFlashOn } from "@/lib/flash-preference";
 import { frameFromSearch, pad2, restingAngle } from "@/lib/print";
@@ -74,14 +74,18 @@ function offTable(dir: Vec): Vec {
 
 const noSubscribe = () => () => {};
 
-/** `?f=07` opens on the seventh print. The server renders the first. */
-function useStartFrame(total: number) {
+/**
+ * `?f=07` opens on the seventh print. The proxy rewrites that URL to the
+ * prerendered /f/07, so the server already rendered `initial` and hydration
+ * agrees with it.
+ */
+function useStartFrame(total: number, initial: number) {
   const search = useSyncExternalStore(
     noSubscribe,
     () => window.location.search,
     () => "",
   );
-  return frameFromSearch(search, total);
+  return frameFromSearch(search, total) ?? initial;
 }
 
 function announce(photo: Photo, i: number, total: number) {
@@ -89,7 +93,7 @@ function announce(photo: Photo, i: number, total: number) {
   return `foto ${i + 1} de ${total}. ${photo.alt}.${caption}`;
 }
 
-export function Pile({ photos }: { photos: Photo[] }) {
+export function Pile({ photos, initial = 0 }: { photos: Photo[]; initial?: number }) {
   const total = photos.length;
   const reduced = useReducedMotion() ?? false;
   const flashOn = useFlashOn();
@@ -97,7 +101,7 @@ export function Pile({ photos }: { photos: Photo[] }) {
   // `top` moves at once, so the throw starts on input. `shown` (surface,
   // counter, caption) changes while the screen is white. Both start at the
   // frame in the URL until the first cut.
-  const start = useStartFrame(total);
+  const start = useStartFrame(total, initial);
   const [topState, setTop] = useState<number | null>(null);
   const [shownState, setShown] = useState<number | null>(null);
   const top = topState ?? start;
@@ -120,7 +124,7 @@ export function Pile({ photos }: { photos: Photo[] }) {
       setShown(i);
       setSurface(photos[i].light);
       setLive(announce(photos[i], i, total));
-      window.history.replaceState(null, "", `?f=${pad2(i + 1)}`);
+      window.history.replaceState(null, "", `/?f=${pad2(i + 1)}`);
     },
     [photos, total],
   );
