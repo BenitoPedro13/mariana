@@ -1,4 +1,4 @@
-import type { Photo } from "@/content/photos";
+import type { Photo } from "@/content/types";
 import { cn } from "@/lib/utils";
 
 /** Her words, verbatim: line breaks, emoji and language kept. */

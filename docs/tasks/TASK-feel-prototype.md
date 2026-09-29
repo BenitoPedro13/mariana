@@ -1,6 +1,6 @@
 # TASK: Feel prototype in Next.js
 
-## 0. Status (2026-09-29): first build, not yet reviewed
+## 0. Status (2026-09-29): built, gaps closed, not yet reviewed
 
 ## 1. Current scenario
 
@@ -57,20 +57,39 @@ on the real stack means the feel review also reviews the real code.
 | Component | Source | How |
 | --- | --- | --- |
 | Button, ToggleGroup | shadcn/ui (Base UI) | Written by hand in shadcn's file layout, on `@base-ui/react` from npm, because the registry is blocked here. Re-run `pnpm dlx shadcn@latest add button toggle-group` where the registry is reachable, then retoken. |
-| USVA Chip | USVA | Not needed yet (series filter isn't built) |
+| Chip | USVA | Written by hand as a Base UI Toggle in the same skin, because the USVA registry is blocked here. Swap for USVA's Chip when it can be fetched |
 | React Bits Stack | React Bits | Not evaluated: blocked here. The Pile is built on `motion` directly, which `03-DESIGN-SYSTEM.md` §6 already names as the fallback |
 | Magic UI | Not in `CLAUDE.md` §10 | Not used. Add it to the list first if we want it |
 
-## 6. Known gaps (deliberate)
+## 6. Gaps
 
-- No series, and no build-time consent check yet.
-- The `/foto/[slug]` prev/next links are plain links with no flash cut yet.
-- Without JavaScript, `?f=` is ignored. The first print, its caption, and all the links still work.
+Closed in the second pass:
+
+- **Series:** `content/series.ts` (empty until she names one), diary order in
+  `content/order.ts`, the label on `/foto/[slug]` linking to `/tudo?serie=…`,
+  and a Chip filter on `/tudo`. Checked with a temporary series, which was then removed.
+- **Consent check:** `content/check.ts`. Photos gained `source` and `others`.
+  `ANAIRAM_PUBLIC=1 pnpm build` fails on the 8 reference photos, as intended.
+- **`/foto/[slug]` prev/next:** `FlashLink` cuts with the flash and navigates
+  at the peak. It's plain navigation under reduced motion or with the flash off.
+- **`?f=` without JavaScript:** `proxy.ts` rewrites `/?f=07` to the prerendered
+  `/f/07`, so the server renders the right print and hydration agrees.
+
+Still open:
+
+- React Bits Stack isn't evaluated, and the shadcn/USVA originals aren't
+  fetched. The registries are blocked in the cloud session, so this needs a
+  machine that can reach them.
+- The wordmark's accessible name ("Mariana") doesn't contain its visible text
+  (`anairam`). WCAG 2.5.3 (label in name) says it should. Benito decides.
+- `others` counts for the reference photos are our read (021 and 030 show
+  2 people each). They matter only once real photos replace them.
 
 ## 7. Affected files
 
-`app/**`, `components/**`, `content/**`, `lib/**`, `package.json`,
-`pnpm-lock.yaml`, configs, `CLAUDE.md` §2, and this doc.
+`app/**`, `components/**`, `content/**`, `lib/**`, `proxy.ts`, `package.json`,
+`pnpm-lock.yaml`, configs, `CLAUDE.md` §2 and §4, `docs/04-UX-AND-MOTION.md`,
+`docs/05-ARCHITECTURE.md`, and this doc.
 
 ## 8. Checks
 

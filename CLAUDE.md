@@ -53,7 +53,8 @@ These rules outrank every design decision:
 - Nothing goes public until Mariana says yes. Until then the site lives behind a
   protected preview with `noindex`.
 - Photos of other people need their consent before they appear. A friend's face
-  is not ours to publish because it was on her Instagram.
+  is not ours to publish because it was on her Instagram. Record `others` and
+  `people` per photo; `content/check.ts` fails the build when they don't add up.
 - The Instagram reference photos are gitignored and never committed. They are
   mood material, not site content.
 - Strip GPS and device EXIF from every image before it ships. Read the capture

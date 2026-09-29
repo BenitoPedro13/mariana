@@ -6,8 +6,10 @@ import { notFound } from "next/navigation";
 import { DateStamp } from "@/components/brand/date-stamp";
 import { FrameCounter } from "@/components/brand/frame-counter";
 import { Caption } from "@/components/pile/caption";
+import { FlashLink } from "@/components/pile/flash-link";
 import { Surface } from "@/components/site/surface";
 import { photoIndex, photos } from "@/content/photos";
+import { series } from "@/content/series";
 import { pad2 } from "@/lib/print";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +38,7 @@ export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
   const total = photos.length;
   const prev = photos[(i - 1 + total) % total];
   const next = photos[(i + 1) % total];
+  const inSeries = series.find((s) => s.slug === photo.series);
 
   return (
     <main className="px-[var(--gutter)] pb-6">
@@ -62,6 +65,14 @@ export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
         </div>
         <figcaption className="mt-6 flex w-full max-w-[60ch] flex-col gap-2 self-start">
           <Caption photo={photo} />
+          {inSeries && (
+            <Link
+              href={`/tudo?serie=${inSeries.slug}`}
+              className="self-start font-mono text-xs text-ink-quiet hover:text-link"
+            >
+              {inSeries.title}
+            </Link>
+          )}
         </figcaption>
       </figure>
 
@@ -73,12 +84,12 @@ export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
           </Link>
         </div>
         <div className="flex gap-2">
-          <Link href={`/foto/${prev.slug}`} className={cn(quiet, "px-2 text-ink")}>
+          <FlashLink href={`/foto/${prev.slug}`} className={cn(quiet, "px-2 text-ink")}>
             <span aria-hidden="true">←&nbsp;</span>anterior
-          </Link>
-          <Link href={`/foto/${next.slug}`} className={cn(quiet, "px-2 text-ink")}>
+          </FlashLink>
+          <FlashLink href={`/foto/${next.slug}`} className={cn(quiet, "px-2 text-ink")}>
             próxima<span aria-hidden="true">&nbsp;→</span>
-          </Link>
+          </FlashLink>
         </div>
       </nav>
     </main>

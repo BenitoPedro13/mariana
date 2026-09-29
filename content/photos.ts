@@ -1,4 +1,7 @@
-import type { StaticImageData } from "next/image";
+import { assertContent } from "@/content/check";
+import { diaryOrder } from "@/content/order";
+import { series } from "@/content/series";
+import type { Photo } from "@/content/types";
 
 // Reference photos from @anairamodarnoc, used only for the feel prototype.
 // They are mood material, not site content (CLAUDE.md §4). Replace this list
@@ -12,27 +15,12 @@ import ref023 from "@/docs/reference/instagram/anairamodarnoc_023.jpg";
 import ref025 from "@/docs/reference/instagram/anairamodarnoc_025.jpg";
 import ref030 from "@/docs/reference/instagram/anairamodarnoc_030.jpg";
 
-export type Light = "night" | "day";
+export type { Light, Photo } from "@/content/types";
 
-export type Photo = {
-  slug: string;
-  image: StaticImageData;
-  /** Written by us, approved by her. Provisional until she has seen it. */
-  alt: string;
-  /** Hers, verbatim. Never edited. */
-  caption?: string;
-  captionLang?: "pt-BR" | "en" | "es";
-  /** ISO date. For reference photos this is the post date, not the capture date. */
-  date: string;
-  light: Light;
-  series?: string;
-  /** Who pressed the shutter. */
-  author: "mariana" | "unconfirmed" | { name: string; handle?: string };
-  /** One entry per identifiable friend, only once they said yes. */
-  people?: { consent: true }[];
-};
-
-export const photos: Photo[] = [
+// Recorded by us, per photo: `others` counts identifiable people besides her.
+// Reference photos never go public (content/check.ts), so their consent is not
+// collected. The counts are our read of each frame and still provisional.
+const entries: Photo[] = [
   {
     slug: "ref-003",
     image: ref003,
@@ -41,6 +29,8 @@ export const photos: Photo[] = [
     date: "2024-07-21",
     light: "night",
     author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
   {
     slug: "ref-005",
@@ -50,6 +40,8 @@ export const photos: Photo[] = [
     date: "2024-05-06",
     light: "night",
     author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
   {
     slug: "ref-007",
@@ -60,6 +52,8 @@ export const photos: Photo[] = [
     date: "2024-04-19",
     light: "day",
     author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
   {
     slug: "ref-016",
@@ -70,6 +64,8 @@ export const photos: Photo[] = [
     date: "2023-11-26",
     light: "day",
     author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
   {
     slug: "ref-021",
@@ -80,6 +76,8 @@ export const photos: Photo[] = [
     date: "2023-09-19",
     light: "night",
     author: "unconfirmed",
+    source: "reference",
+    others: 2,
   },
   {
     slug: "ref-023",
@@ -90,6 +88,8 @@ export const photos: Photo[] = [
     date: "2023-08-13",
     light: "night",
     author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
   {
     slug: "ref-025",
@@ -99,6 +99,8 @@ export const photos: Photo[] = [
     date: "2023-06-20",
     light: "day",
     author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
   {
     slug: "ref-030",
@@ -109,8 +111,13 @@ export const photos: Photo[] = [
     date: "2023-01-15",
     light: "day",
     author: "unconfirmed",
+    source: "reference",
+    others: 2,
   },
 ];
+
+/** Checked (the build fails on a consent gap) and in diary order. */
+export const photos: Photo[] = diaryOrder(assertContent(entries, series), series);
 
 export function photoIndex(slug: string) {
   return photos.findIndex((p) => p.slug === slug);

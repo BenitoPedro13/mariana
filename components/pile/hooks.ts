@@ -3,7 +3,7 @@
 import { useEffect, useRef, type RefObject } from "react";
 
 import { REVERSE_EVENT } from "@/components/brand/wordmark";
-import type { Light } from "@/content/photos";
+import type { Light } from "@/content/types";
 import { develop, flash, settleFlash } from "@/lib/flash";
 
 type Steps = {

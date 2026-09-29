@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 import { DateStamp } from "@/components/brand/date-stamp";
+import { Chip } from "@/components/ui/chip";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import type { Light, Photo } from "@/content/photos";
+import type { Light, Photo, Series } from "@/content/types";
 
 type Filter = "tudo" | Light;
 
@@ -16,27 +17,64 @@ const filters: { value: Filter; label: string }[] = [
   { value: "day", label: "dia" },
 ];
 
+const noSubscribe = () => () => {};
+
+/** `/tudo?serie=carnaval-2023` opens filtered, from the photo page's label. */
+function useSeriesFromUrl(series: Series[]) {
+  const search = useSyncExternalStore(
+    noSubscribe,
+    () => window.location.search,
+    () => "",
+  );
+  const slug = new URLSearchParams(search).get("serie");
+  return series.some((s) => s.slug === slug) ? slug : null;
+}
+
 /** Everything in the Pile, flat, in the same order. No motion. */
-export function ContactSheet({ photos }: { photos: Photo[] }) {
+export function ContactSheet({ photos, series }: { photos: Photo[]; series: Series[] }) {
   const [filter, setFilter] = useState<Filter>("tudo");
-  const visible = photos.filter((p) => filter === "tudo" || p.light === filter);
+  const fromUrl = useSeriesFromUrl(series);
+  // undefined: nothing chosen here yet, so the URL decides.
+  const [chosen, setChosen] = useState<string | null | undefined>(undefined);
+  const activeSeries = chosen === undefined ? fromUrl : chosen;
+
+  const visible = photos.filter(
+    (p) =>
+      (filter === "tudo" || p.light === filter) &&
+      (!activeSeries || p.series === activeSeries),
+  );
 
   return (
     <>
-      <ToggleGroup
-        aria-label="filtrar fotos"
-        value={[filter]}
-        onValueChange={(v) => {
-          if (v[0]) setFilter(v[0] as Filter);
-        }}
-        className="mb-6"
-      >
-        {filters.map((f) => (
-          <ToggleGroupItem key={f.value} value={f.value}>
-            {f.label}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
+      <div className="mb-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+        <ToggleGroup
+          aria-label="filtrar por luz"
+          value={[filter]}
+          onValueChange={(v) => {
+            if (v[0]) setFilter(v[0] as Filter);
+          }}
+        >
+          {filters.map((f) => (
+            <ToggleGroupItem key={f.value} value={f.value}>
+              {f.label}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+
+        {series.length > 0 && (
+          <div role="group" aria-label="séries" className="flex flex-wrap gap-2">
+            {series.map((s) => (
+              <Chip
+                key={s.slug}
+                pressed={activeSeries === s.slug}
+                onPressedChange={(on) => setChosen(on ? s.slug : null)}
+              >
+                {s.title}
+              </Chip>
+            ))}
+          </div>
+        )}
+      </div>
 
       {visible.length === 0 ? (
         <p className="text-ink-quiet">nada aqui. ainda.</p>

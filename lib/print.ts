@@ -23,8 +23,14 @@ export function restingAngle(slug: string) {
   return Math.round((unit * 6 - 3) * 10) / 10;
 }
 
-/** `?f=07` → 6. Out of range or missing → 0. */
+/** `07` → 6. Missing, malformed or out of range → null. */
+export function parseFrame(value: string | null | undefined, total: number) {
+  if (!value || !/^\d{1,3}$/.test(value)) return null;
+  const f = Number(value);
+  return f >= 1 && f <= total ? f - 1 : null;
+}
+
+/** `?f=07` → 6, or null. */
 export function frameFromSearch(search: string, total: number) {
-  const f = Number(new URLSearchParams(search).get("f"));
-  return Number.isInteger(f) && f >= 1 && f <= total ? f - 1 : 0;
+  return parseFrame(new URLSearchParams(search).get("f"), total);
 }
