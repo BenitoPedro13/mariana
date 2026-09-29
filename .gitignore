@@ -1,0 +1,8 @@
+# Reference material from Mariana's Instagram. Photos of her and her friends
+# stay on this machine and never enter git history.
+docs/reference/instagram/*.jpg
+docs/reference/instagram/*.jpeg
+docs/reference/instagram/*.png
+docs/reference/instagram/*.mp4
+
+.DS_Store
