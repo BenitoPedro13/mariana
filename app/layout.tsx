@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, DM_Mono, Schibsted_Grotesk } from "next/font/google";
 
 import { FlashLayer } from "@/components/pile/flash-layer";
-import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeader } from "@/components/site/site-header";
 import { FLASH_STORAGE_KEY } from "@/lib/flash-key";
 
 import "./globals.css";
@@ -56,9 +54,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: exposureScript }} />
       </head>
       <body data-surface="night" suppressHydrationWarning>
-        <SiteHeader />
         {children}
-        <SiteFooter />
         <FlashLayer />
       </body>
     </html>

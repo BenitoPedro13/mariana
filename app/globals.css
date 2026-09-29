@@ -126,3 +126,8 @@ a {
     transition-duration: 0s !important;
   }
 }
+
+/* Lab: the verb ring replaces the pointer only where it has a verb to show. */
+.lab-cursor [data-cursor] {
+  cursor: none;
+}
