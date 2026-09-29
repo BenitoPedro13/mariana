@@ -25,11 +25,13 @@ The source of truth is the numbered set in `docs/`:
 
 The current task must have a document in `docs/tasks/` before work begins.
 
-## 2. Current phase: documents only
+## 2. Current phase: feel prototype
 
-This repository holds `CLAUDE.md` and `docs/` and nothing else. There is no app
-yet. Do not scaffold Next.js, install packages, or write components until the
-brand docs are agreed and a build task exists in `docs/tasks/`.
+The Next.js app exists (`docs/tasks/TASK-feel-prototype.md`). It runs the Pile,
+the flash cut, and the Reversal on 8 reference photos, so the feel can be judged
+on the real stack. It is a prototype: its photos are Instagram reference
+material, not site content, and it is never deployed publicly. The brand docs
+are still under review. Change them first when the feel says they're wrong.
 
 ## 3. Source hierarchy
 

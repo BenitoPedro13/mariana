@@ -1,0 +1,86 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { DateStamp } from "@/components/brand/date-stamp";
+import { FrameCounter } from "@/components/brand/frame-counter";
+import { Caption } from "@/components/pile/caption";
+import { Surface } from "@/components/site/surface";
+import { photoIndex, photos } from "@/content/photos";
+import { pad2 } from "@/lib/print";
+import { cn } from "@/lib/utils";
+
+export function generateStaticParams() {
+  return photos.map((p) => ({ slug: p.slug }));
+}
+
+export const dynamicParams = false;
+
+export async function generateMetadata(
+  props: PageProps<"/foto/[slug]">,
+): Promise<Metadata> {
+  const { slug } = await props.params;
+  const i = photoIndex(slug);
+  return { title: i < 0 ? "foto" : `foto ${pad2(i + 1)}` };
+}
+
+const quiet = "inline-flex min-h-11 items-center text-ink-quiet hover:text-link";
+
+export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
+  const { slug } = await props.params;
+  const i = photoIndex(slug);
+  if (i < 0) notFound();
+
+  const photo = photos[i];
+  const total = photos.length;
+  const prev = photos[(i - 1 + total) % total];
+  const next = photos[(i + 1) % total];
+
+  return (
+    <main className="px-[var(--gutter)] pb-6">
+      <Surface light={photo.light} />
+      {/* The photo page never crops: the whole frame, as large as fits. */}
+      <figure className="flex flex-col items-center">
+        <div
+          className="relative max-w-full shadow-[0_0_0_1px_var(--hairline)]"
+          style={{
+            aspectRatio: `${photo.image.width} / ${photo.image.height}`,
+            height: `min(80svh, calc((100vw - 2 * var(--gutter)) * ${photo.image.height / photo.image.width}))`,
+          }}
+        >
+          <Image
+            src={photo.image}
+            alt={photo.alt}
+            fill
+            sizes="(max-width: 640px) 100vw, 70vw"
+            placeholder="blur"
+            preload
+            className="object-contain"
+          />
+          <DateStamp date={photo.date} className="absolute right-3 bottom-3" />
+        </div>
+        <figcaption className="mt-6 flex w-full max-w-[60ch] flex-col gap-2 self-start">
+          <Caption photo={photo} />
+        </figcaption>
+      </figure>
+
+      <nav aria-label="fotos" className="mt-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <FrameCounter current={i + 1} total={total} />
+          <Link href={`/?f=${pad2(i + 1)}`} className={quiet}>
+            voltar
+          </Link>
+        </div>
+        <div className="flex gap-2">
+          <Link href={`/foto/${prev.slug}`} className={cn(quiet, "px-2 text-ink")}>
+            <span aria-hidden="true">←&nbsp;</span>anterior
+          </Link>
+          <Link href={`/foto/${next.slug}`} className={cn(quiet, "px-2 text-ink")}>
+            próxima<span aria-hidden="true">&nbsp;→</span>
+          </Link>
+        </div>
+      </nav>
+    </main>
+  );
+}
