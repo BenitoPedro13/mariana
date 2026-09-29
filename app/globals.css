@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* Tokens: docs/03-DESIGN-SYSTEM.md §1. Components consume the semantic layer only. */
+
+:root {
+  /* primitives */
+  --noite: #0e0b0f;
+  --flash: #f6f3ee;
+  --asfalto: #8a8386;
+  --asfalto-sheet: #6b6468;
+  --vdv: #98003b;
+  --rosa: #c27790;
+  --rosa-sheet: #a3446a;
+  --taxi: #f2c200;
+  --taxi-sheet: #7a5f00;
+  --cobalto: #6f8bff;
+
+  --mark: var(--vdv);
+  --focus: var(--cobalto);
+
+  /* motion: docs/03-DESIGN-SYSTEM.md §3 */
+  --flash-peak: 0.85;
+  --settle: 380ms cubic-bezier(0.3, 0, 0, 1);
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --header-h: 72px;
+}
+
+[data-surface="night"] {
+  --surface: var(--noite);
+  --ink: var(--flash);
+  --ink-quiet: var(--asfalto);
+  --link: var(--rosa);
+  --stamp: var(--taxi);
+  --hairline: color-mix(in srgb, var(--flash) 12%, transparent);
+  --focus-outer: transparent;
+}
+
+[data-surface="day"] {
+  --surface: var(--flash);
+  --ink: var(--noite);
+  --ink-quiet: var(--asfalto-sheet);
+  --link: var(--rosa-sheet);
+  --stamp: var(--taxi-sheet);
+  --hairline: color-mix(in srgb, var(--noite) 14%, transparent);
+  /* Cobalto is 2.78:1 on Flash, so the day ring gets a Noite outer ring. */
+  --focus-outer: var(--noite);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-quiet: var(--ink-quiet);
+  --color-link: var(--link);
+  --color-stamp: var(--stamp);
+  --color-mark: var(--mark);
+  --color-focus: var(--focus);
+  --color-noite: var(--noite);
+  --color-flash: var(--flash);
+  --color-taxi: var(--taxi);
+  --font-display: var(--font-bodoni);
+  --font-sans: var(--font-schibsted);
+  --font-mono: var(--font-dm-mono);
+  --radius: 0;
+}
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  /* The surface is a hard cut, never a fade: no transition on these. */
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  isolation: isolate;
+  min-height: 100svh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain: one static atmosphere layer over Noite only, under everything. */
+body[data-surface="night"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--mark);
+  color: var(--flash);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--focus-outer);
+}
+
+a {
+  text-underline-offset: 0.2em;
+}
+
+/* First exposure (docs/04-UX-AND-MOTION.md §3.1). The inline script in the
+   layout adds this class before first paint. The animation is a failsafe: if
+   the client never takes over, the pile shows itself after 2.5 s anyway. */
+.first-exposure [data-pile-stage] {
+  opacity: 0;
+  animation: exposure-failsafe 0s 2.5s forwards;
+}
+
+@keyframes exposure-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
