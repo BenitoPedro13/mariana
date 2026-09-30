@@ -8,7 +8,7 @@ import { REVERSE_EVENT } from "@/components/brand/use-reversal";
 import { INTRO_DONE_EVENT } from "@/components/diario/header";
 import { Hair, Square } from "@/components/diario/marks";
 import { useSmoothScroll } from "@/components/diario/smooth-scroll";
-import { WaveImage } from "@/components/diario/wave-image";
+import { RippleImage } from "@/components/diario/ripple-image";
 import type { Photo } from "@/content/types";
 import { flash } from "@/lib/flash";
 import { useFlashOn } from "@/lib/flash-preference";
@@ -176,14 +176,14 @@ export function DiarioHero({ photos, counts }: { photos: Photo[]; counts: Counts
             style={{ ["--i" as string]: i }}
           >
             <Link href={`/foto/${p.slug}`} aria-label={`abrir foto: ${p.alt}`} className="block size-full will-change-transform">
-              <WaveImage
+              <RippleImage
                 src={p.image}
                 alt={p.alt}
                 sizes="(max-width: 767px) 100vw, 34vw"
                 placeholder="blur"
                 preload
                 onLoad={onPhotoLoad}
-                focusY={0.35}
+                widthHint={560}
               />
             </Link>
           </div>

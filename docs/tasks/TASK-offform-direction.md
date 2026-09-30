@@ -336,12 +336,32 @@ Decisions from §7:
 Routes: the diary is the home at `/` (`app/(diario)`). The Pile moves to
 `/pilha`, with its `?f=` proxy and first exposure, so the two can be compared.
 
+### Hover effect: React Bits RippleDistortion (2026-09-30)
+
+Benito replaced the strip-wave hover ("trash") with **RippleDistortion from
+React Bits** (MIT), ported to TypeScript in `components/react-bits/ripple-distortion.tsx`
+and wrapped for photos by `components/diario/ripple-image.tsx`.
+
+- **Storytelling job:** the photo reacts to the pointer like wet paper.
+  It's a hover detail on photos that are already the region's sula, not a sula of its own.
+- **Layer:** motion, on the photo. It never runs during a flash cut, because the hero
+  intro finishes before it can be reached.
+- **Settings:** brushSize 150, strength 0.2, swirl 1, rings 4, the library's defaults.
+  `grayscale` is off and `tintAmount` is 0, so it distorts her photo but never
+  recolours it.
+- **Keyboard, touch, reduced motion, SSR:** it's hover-only, so there's nothing for the keyboard.
+  It only mounts on fine pointers ≥ 768 px with motion allowed. The real `<img>` stays
+  underneath for first paint, no-JS and the alt text, and the canvas takes over once its
+  texture is drawn.
+- **Our changes to the source:** an `onReady` callback, and the loop stops drawing
+  while no ripple is alive, so three instances cost nothing at rest.
+
 ## 9. Progress
 
 - [x] Step 1: foundation (tokens, cursor, Lenis, header, preloader, hero, S0–S2).
   Checked in Chromium: the preloader counts 0 → 100% with the square on the tip,
   then the flash, the curtain reveal with 80/160/240 ms delays, the ticks and
-  corners, the header fade and the Reversal, the wave hover, column lag and line
+  corners, the header fade and the Reversal, the hover (now RippleDistortion), column lag and line
   hold on scroll, phones (one frame, 9 s turns), reduced motion and no-JS (all
   visible at once), and the Tab order. The frames weren't available in the cloud
   session, so this was checked against the plan's text.
