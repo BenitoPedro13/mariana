@@ -379,8 +379,36 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   frames `03-hero-exit-about` and `04-featured-strip` in Chromium at 1440 × 804,
   phones at 390, and with reduced motion. The about copy only says what the
   photos show (dates, counts, flash, her captions); nothing about her is invented.
-- [ ] Step 3: S5
-- [ ] Step 4: S6
+- [x] Step 3: S5 (`components/diario/roster.tsx`). `#fotos`: a sticky stage
+  pinned for 110vh. `fotos ——— o diário ■` builds over the first 40 % of the
+  pin (to the middle of the row, where the switch starts); a list taller than
+  the stage rises through the rest. The `noite` / `dia` switch (toggle buttons
+  with `aria-pressed`, the count announced politely) builds once on entry:
+  square below-left, along the growing underline, up to the word, the two
+  options 90 ms apart. Rows: the photo's diary number · her caption verbatim
+  (ellipsis on screen, whole in the DOM, `lang` kept) · the date, 48 px (40 px
+  ≤ 1024), hairline under each. Hover or focus: Rosa with the glow, and a
+  260 × 360 preview that follows the pointer (x + 24, lerp 0.16, 20 px from
+  every edge, never below the section), or sits by the row when focused by
+  keyboard. The previews load only when the section is near. Phones: no pin,
+  no preview. Reduced motion: the switch is already built, the preview snaps.
+  Checked against frames `05-roster`.
+- [x] Step 4: S6 (`components/diario/curtain.tsx`). `#legendas` (the nav's
+  third item is now `legendas`: no series exist yet, so the section doesn't
+  claim them). One sticky stage, pinned for 535vh: the big photo (ref-005)
+  parts down the middle over 90vh until 250 px of each half is left (20 px on
+  tablet, 15 px on phones); the 90 × 120 print reveals top → bottom over the
+  split's last 42 %; after 25vh, three captions (ref-007, ref-002, ref-008:
+  date · light, then her caption verbatim with her line breaks) rise 100vh
+  each and every line parts around the print as it passes, then closes
+  again. The print swaps with a hard cut per caption and links to that photo.
+  30vh hold, then the exact reverse. The photo drifts +45 → 0 px inside its
+  frame on the way in and 0 → −45 px on the way out, never while closing.
+  One readable copy of each caption stays in the accessibility tree; the
+  parted lines are `aria-hidden` copies. Reduced motion and no JavaScript get
+  a still column instead (`lib/motion-preference.ts`): the photo, then each
+  print with its caption. Checked against frames `06-services-curtain` in
+  Chromium at 1440 × 804, phones at 390, and with reduced motion.
 - [ ] Step 5: S7
 - [ ] Step 6: S8 (S9 dropped)
 - [ ] Step 7: S10–S11
