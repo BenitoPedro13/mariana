@@ -1,5 +1,6 @@
 import { DiarioHeader, type NavItem } from "@/components/diario/header";
 import { AboutStrip } from "@/components/diario/about-strip";
+import { Curtain } from "@/components/diario/curtain";
 import { DiarioHero } from "@/components/diario/hero";
 import { Roster } from "@/components/diario/roster";
 import { Surface } from "@/components/site/surface";
@@ -8,14 +9,23 @@ import { photos } from "@/content/photos";
 // The three hero photos: a night, a day and a night, one saturated colour each.
 const HERO = ["ref-006", "ref-016", "ref-029"];
 
+// S6: the photo that parts, and the three captions that pass through it.
+const CURTAIN = { cover: "ref-005", photos: ["ref-007", "ref-002", "ref-008"] };
+
 const NAV: NavItem[] = [
   { id: "sobre", label: "sobre" },
   { id: "fotos", label: "fotos" },
-  { id: "series", label: "séries" },
+  { id: "legendas", label: "legendas" },
 ];
 
+const pick = (slug: string) => {
+  const p = photos.find((x) => x.slug === slug);
+  if (!p) throw new Error(`diário: no photo "${slug}"`);
+  return p;
+};
+
 export default function Diario() {
-  const hero = HERO.map((slug) => photos.find((p) => p.slug === slug)!).filter(Boolean);
+  const hero = HERO.map(pick);
   const years = photos.map((p) => p.date.slice(0, 4)).sort();
   const span = years[0] === years.at(-1) ? years[0] : `${years[0]} — ${years.at(-1)}`;
   const counts = {
@@ -32,6 +42,10 @@ export default function Diario() {
         <DiarioHero photos={hero} counts={counts} />
         <AboutStrip photos={photos} counts={counts} years={[years[0], years.at(-1)!]} />
         <Roster photos={photos} counts={counts} />
+        <Curtain
+          cover={pick(CURTAIN.cover)}
+          photos={CURTAIN.photos.map(pick)}
+        />
       </main>
     </>
   );
