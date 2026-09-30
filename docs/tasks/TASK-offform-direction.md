@@ -409,7 +409,26 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   a still column instead (`lib/motion-preference.ts`): the photo, then each
   print with its caption. Checked against frames `06-services-curtain` in
   Chromium at 1440 × 804, phones at 390, and with reduced motion.
-- [ ] Step 5: S7
-- [ ] Step 6: S8 (S9 dropped)
+- [x] Step 5: S7 (`components/diario/gallery.tsx`). `#selecao`: a sticky stage
+  pinned for 115vh; `seleção ——— 05 fotos ■` builds over the first 40 %. The
+  frame (34 % → the edge, 68vh, 45vh on phones) comes in 150 px low and parks.
+  Five photos (ref-003, ref-019, ref-011, ref-025, ref-022): hold 2300 ms, the
+  curtain rises 950 ms, the next opens 950 ms. It runs only while the stage is
+  stuck (the frame fully in view on phones), holds on hover or focus, has
+  `anterior` / `pausar` / `próxima` (WCAG 2.2.2), and goes back to the first
+  photo once the section is off-screen. The left column shows the diary number,
+  her caption verbatim, the date and light, `ver foto`, and the progress
+  `01 ■──── 05`. Reduced motion: no autoplay and no pause button; the arrows
+  cut straight to the photo. No wave hover here: five stacked WebGL canvases
+  cost more than the effect is worth. Checked against frames `07-campaigns`.
+- [x] Step 6: S8 (`components/diario/index-list.tsx`; S9 dropped). `#indice`:
+  S5 already lists every photo, so the index is by month instead: 13 rows,
+  newest first, each the month, its count, and a link to that month's first
+  photo. `índice ——— por mês ■` builds as it rises. Left (32 %, sticky): a 4:3
+  crop of the active month's first photo (all loaded, swapped at once) and
+  `foto · luz · ano`. Hover or focus makes a row active and Rosa; with a still
+  pointer, the row under it stays active while the page scrolls. Not pinned:
+  the section is a plain scroll with a sticky left column, which reads the
+  same on phones (stacked). Checked against frames `08-partners-contact`.
 - [ ] Step 7: S10–S11
 - [ ] Step 8: mobile, reduced motion, a11y

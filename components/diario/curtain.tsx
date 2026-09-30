@@ -84,7 +84,7 @@ function Still({ cover, photos }: { cover: Photo; photos: Photo[] }) {
         <h2 id="d-legendas" tabIndex={-1} className="outline-none">
           legendas
         </h2>
-        {photos.map((p, i) => (
+        {photos.map((p) => (
           <article key={p.slug} className="flex max-w-[460px] flex-col items-center gap-5">
             <Link href={`/foto/${p.slug}`} className="relative block" style={{ width: UNIT.w, height: UNIT.h }}>
               <Image src={p.image} alt={p.alt} fill sizes="90px" className="object-cover" />
