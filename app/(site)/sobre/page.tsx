@@ -1,8 +1,11 @@
-import type { Metadata } from "next";
-
 import { Surface } from "@/components/site/surface";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "sobre" };
+export const metadata = pageMetadata({
+  title: "sobre",
+  description: "Mariana, @anairamodarnoc no instagram.",
+  path: "/sobre",
+});
 
 // `>:(` is hers, from her bio. Whatever she writes goes under it; until then, nothing.
 export default function Sobre() {

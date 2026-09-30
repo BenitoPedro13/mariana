@@ -138,7 +138,8 @@ components/
   site/       header, footer, ContactSheet, Surface, FlashToggle
   ui/         Button, Chip, ToggleGroup (shadcn-style, on Base UI)
 content/      types.ts, photos.ts, series.ts, order.ts, check.ts
-lib/          flash, flash-preference, motion-preference, print, utils
+lib/          flash, flash-preference, motion-preference, print, site, utils
+components/og/  the link-preview card (next/og), fonts in assets/fonts/
 ```
 
 Per the global conventions, every hook sits behind a named custom hook in a
@@ -150,7 +151,14 @@ feature-local `hooks.ts`. Components stay thin.
 | --- | --- |
 | Building | Local only |
 | Showing Mariana | Vercel preview with Deployment Protection (password or Vercel auth), `robots: noindex, nofollow` |
-| After her yes | Public domain, indexing on only if she wants it |
+| After her yes | Public domain (`ANAIRAM_PUBLIC=1`), indexing on only if she wants it (`ANAIRAM_INDEX=1` as well) |
+
+- `lib/site.ts` holds the switch. Until both are set, every page has `noindex,
+  nofollow, noimageindex`, every response has the same `X-Robots-Tag`, and
+  robots.txt admits only link-preview fetchers. `ANAIRAM_URL` sets the canonical
+  domain (`docs/tasks/TASK-og-and-seo.md`).
+- Link previews use a typographic card, never a photo: a preview is a copy in
+  someone else's cache, out of reach of a takedown.
 
 - No analytics, pixels, or third-party embeds. Fonts are self-hosted through `next/font`.
 - One `localStorage` key (`anairam:flash`) for the flash toggle. It's not a

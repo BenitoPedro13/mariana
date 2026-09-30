@@ -214,7 +214,7 @@ never animates and never sits on top of a photo.
 
 | Surface | Treatment |
 | --- | --- |
-| Favicon | `i.` monogram on Noite |
-| Open Graph image | One photo she picks, full-bleed, with the date stamp and a small `anairam` bottom-left |
+| Favicon | `i.` monogram on Noite (SVG, plus a 180 px PNG touch icon) |
+| Open Graph image | One photo she picks, full-bleed, with the date stamp and a small `anairam` bottom-left. Until she picks one: the name on Noite, set like the diary's chrome (header columns and squares, the magenta tittle, `anairam ——— mariana ■`, the count and the date stamp), one per photo page with its counter and stamp. Never a reference photo (`docs/tasks/TASK-og-and-seo.md`) |
 | Instagram bio link | `anairam.com.br`, no link-tree, no UTM |
 | Print (if ever) | Same rules: Noite border, date stamp, counter |
