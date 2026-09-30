@@ -47,10 +47,21 @@ export function WaveImage({ focusY = 0.5, wrapClassName, className, alt, ...imag
     let py = 0;
     let lastMove = 0;
     let moving = false;
+    // The <img> uses srcset, so its naturalWidth is in CSS px (density-corrected),
+    // while drawImage crops in bitmap px. A plain copy of the chosen source has
+    // the real bitmap size; it comes from the cache.
+    let bitmap: HTMLImageElement | null = null;
+    const sourceFor = (im: HTMLImageElement) => {
+      const src = im.currentSrc || im.src;
+      if (bitmap?.src === new URL(src, location.href).href) return bitmap.complete ? bitmap : null;
+      bitmap = new window.Image();
+      bitmap.src = src;
+      return null;
+    };
 
     const draw = () => {
-      const im = img.current;
-      if (!im || !im.complete || !im.naturalWidth) {
+      const im = img.current ? sourceFor(img.current) : null;
+      if (!im || !im.naturalWidth) {
         raf = requestAnimationFrame(draw);
         return;
       }
