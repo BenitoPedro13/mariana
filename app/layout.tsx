@@ -34,10 +34,11 @@ export const viewport: Viewport = {
   themeColor: "#0e0b0f",
 };
 
-// Runs before first paint on a full load of the home: hides the pile so the
-// first exposure can develop it out of the flash. Skipped for reduced motion
-// and for "desligar flash".
-const exposureScript = `(function(){try{if(location.pathname!=="/")return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(localStorage.getItem(${JSON.stringify(FLASH_STORAGE_KEY)})==="off")return;document.documentElement.classList.add("first-exposure")}catch(e){}})()`;
+// Runs before first paint on a full load, so nothing flashes in before its
+// entrance. On the diary home (`/`) the preloader holds the page; on the Pile
+// (`/pilha`) the first exposure develops it out of the flash. Both are skipped
+// for reduced motion; the Pile's also for "desligar flash".
+const exposureScript = `(function(){try{var d=document.documentElement,p=location.pathname;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(p==="/"){d.classList.add("diario-loading");return}if(p!=="/pilha")return;if(localStorage.getItem(${JSON.stringify(FLASH_STORAGE_KEY)})==="off")return;d.classList.add("first-exposure")}catch(e){}})()`;
 
 export default function RootLayout({
   children,

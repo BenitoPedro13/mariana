@@ -309,3 +309,46 @@ Each step is one commit, checked in the browser against its frames.
 - **Flag:** `.gitignore` has the `docs/reference/instagram/*.jpg` rules
   commented out and commit `2b6cdaf` added the photos to git. `CLAUDE.md` §4
   says they never enter git history. Left as is; Benito's call.
+
+## 8. Adaptation (agreed 2026-09-30)
+
+Benito agreed to take OFFFORM's **technique and pacing** and keep Mariana's
+identity, rather than a faithful clone. So these values override §2:
+
+| §2 says | Built as | Why |
+| --- | --- | --- |
+| `#0b0b0b` / `#fff` | Noite `#0E0B0F` / Flash `#F6F3EE` | her palette (`02-VISUAL-IDENTITY.md` §3) |
+| accent `#ff4fd8` | Rosa Banheiro `#C27790` for text and glow; Magenta VDV stays a fill | Rosa passes AA on Noite (5.9:1); VDV fails as text (2.23:1) |
+| Courier, uppercase | DM Mono, lowercase, 11 px (10 px tick labels) | her type set; her voice is lowercase; 11 px is the doc floor |
+| static wordmark | `anairam` with the Reversal; it turns when the intro ends | the one brand element Benito kept |
+| loader fades out (220 ms) | one flash opens the room (fade only when `desligar flash` is on) | Direct Flash; same flash safety rules |
+| header grid `1fr 1.25fr 0.5fr 1fr 0.8fr` | `1.1fr 1.2fr 0.45fr 1fr 0.85fr`; the two squares are her "dois moods" (a Noite one, a Flash one) | ours, not theirs |
+
+Decisions from §7:
+
+- **Contact (S9): dropped.** No form and no contact block.
+- **More photos: yes.** Added 10 reference posts where she's alone or no one
+  is identifiable (002, 006, 008, 010, 011, 014, 019, 020, 022, 029), for 18 in
+  total. Each has our alt text, the decoded post date, and `others: 0`.
+- **Instagram photos stay in git.** That's Benito's call, so the `CLAUDE.md` §4 line
+  is updated.
+
+Routes: the diary is the home at `/` (`app/(diario)`). The Pile moves to
+`/pilha`, with its `?f=` proxy and first exposure, so the two can be compared.
+
+## 9. Progress
+
+- [x] Step 1: foundation (tokens, cursor, Lenis, header, preloader, hero, S0–S2).
+  Checked in Chromium: the preloader counts 0 → 100% with the square on the tip,
+  then the flash, the curtain reveal with 80/160/240 ms delays, the ticks and
+  corners, the header fade and the Reversal, the wave hover, column lag and line
+  hold on scroll, phones (one frame, 9 s turns), reduced motion and no-JS (all
+  visible at once), and the Tab order. The frames weren't available in the cloud
+  session, so this was checked against the plan's text.
+- [ ] Step 2: S3–S4
+- [ ] Step 3: S5
+- [ ] Step 4: S6
+- [ ] Step 5: S7
+- [ ] Step 6: S8 (S9 dropped)
+- [ ] Step 7: S10–S11
+- [ ] Step 8: mobile, reduced motion, a11y

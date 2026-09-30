@@ -83,7 +83,7 @@ export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
       <nav aria-label="fotos" className="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <FrameCounter current={i + 1} total={total} />
-          <Link href={`/?f=${pad2(i + 1)}`} className={quiet}>
+          <Link href={`/pilha?f=${pad2(i + 1)}`} className={quiet}>
             voltar
           </Link>
         </div>

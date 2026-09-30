@@ -124,7 +124,7 @@ export function Pile({ photos, initial = 0 }: { photos: Photo[]; initial?: numbe
       setShown(i);
       setSurface(photos[i].light);
       setLive(announce(photos[i], i, total));
-      window.history.replaceState(null, "", `/?f=${pad2(i + 1)}`);
+      window.history.replaceState(null, "", `/pilha?f=${pad2(i + 1)}`);
     },
     [photos, total],
   );
