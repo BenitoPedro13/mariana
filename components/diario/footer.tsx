@@ -256,7 +256,7 @@ export function DiarioFooter({ nav, counts, years }: { nav: NavItem[]; counts: {
     {
       title: "navegação",
       items: nav.map((n) => (
-        <a key={n.id} href={`#${n.id}`} onClick={go(n.id)} className="d-glow">
+        <a key={n.id} href={`#${n.id}`} onClick={go(n.id)} className="d-glow inline-flex min-h-6 items-center">
           {n.label}
         </a>
       )),
@@ -264,10 +264,10 @@ export function DiarioFooter({ nav, counts, years }: { nav: NavItem[]; counts: {
     {
       title: "outras vistas",
       items: [
-        <Link key="tudo" href="/tudo" className="d-glow">
+        <Link key="tudo" href="/tudo" className="d-glow inline-flex min-h-6 items-center">
           tudo, de uma vez
         </Link>,
-        <Link key="pilha" href="/pilha" className="d-glow">
+        <Link key="pilha" href="/pilha" className="d-glow inline-flex min-h-6 items-center">
           a pilha
         </Link>,
       ],
@@ -289,7 +289,7 @@ export function DiarioFooter({ nav, counts, years }: { nav: NavItem[]; counts: {
               <Square size={7} />
               {c.title}
             </p>
-            <ul className="mt-2.5 flex flex-col gap-0.5 text-flash/70">
+            <ul className="mt-2.5 flex flex-col text-flash/70 [&>li]:min-h-6 [&>li]:content-center">
               {c.items.map((it, i) => (
                 <li key={i}>{it}</li>
               ))}

@@ -27,11 +27,18 @@ The current task must have a document in `docs/tasks/` before work begins.
 
 ## 2. Current phase: the diary direction
 
-The home is being rebuilt on the OFFFORM study (`docs/tasks/TASK-offform-direction.md`):
+The home is built on the OFFFORM study (`docs/tasks/TASK-offform-direction.md`):
 their technique and pacing, with her palette, type, name and Reversal. It lives at `/`
-(`app/(diario)`); the earlier Pile is kept at `/pilha` for comparison, and the
-four home studies at `/lab`. Brand docs 01–04 still describe Direct Flash and
-get rewritten once this direction settles.
+(`app/(diario)`, components in `components/diario/`): preloader and hero, sobre and
+destaques, fotos, legendas, seleção, índice, and the footer, all eight build steps
+done (§9 of the task). The earlier Pile is kept at `/pilha` for comparison, and the
+four home studies at `/lab`. Brand docs 01–04 and §6 below still describe Direct
+Flash and the Pile as the home; they get rewritten once Benito signs off on the feel.
+
+The diary sections share a few rules: scroll-driven work happens in one rAF per
+section, a pinned stage never pins on phones unless the section needs it (the
+curtain does), reduced motion and no-JS get a still version with the same content,
+and anything that moves by itself can be paused (WCAG 2.2.2).
 
 The Next.js app exists (`docs/tasks/TASK-feel-prototype.md`). It runs the Pile,
 the flash cut, and the Reversal on 8 reference photos, so the feel can be judged

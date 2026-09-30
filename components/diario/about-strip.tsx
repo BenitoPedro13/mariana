@@ -183,11 +183,17 @@ export function AboutStrip({
             </div>
 
             <dl className="col-start-4 grid self-start grid-cols-3 gap-x-4 justify-self-end text-right max-md:col-start-1 max-md:justify-self-start max-md:text-left">
-              {meta.flat().map((m, i) => (
-                <dd key={i} className={i % 3 === 2 ? "tabular-nums" : "text-flash/60"}>
-                  {m}
-                </dd>
-              ))}
+              {meta.flat().map((m, i) =>
+                i % 3 === 2 ? (
+                  <dd key={i} className="tabular-nums">
+                    {m}
+                  </dd>
+                ) : (
+                  <dt key={i} className="text-flash/60">
+                    {m}
+                  </dt>
+                ),
+              )}
             </dl>
           </div>
         </div>

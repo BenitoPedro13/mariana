@@ -448,4 +448,14 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   position (the section holding 45 % of the screen) instead of an
   IntersectionObserver, which lost track on long pinned sections. Checked
   against frames `09-footer` and `10-nav-jumps`.
-- [ ] Step 8: mobile, reduced motion, a11y
+- [x] Step 8: mobile, reduced motion, a11y. The whole home, top to bottom:
+  axe-core (WCAG 2.0–2.2 A/AA) finds nothing on desktop, on phones (390 × 844)
+  and with reduced motion, after fixing a `<dl>` without `<dt>` in sobre and
+  targets under 24 px (the hero's `ver todas`, the footer links). No
+  horizontal overflow at any scroll position on phones or desktop. Keyboard:
+  67 Tab stops through the page, each on screen and visible when focused (no
+  stop lands in a hidden stage or a clipped print); the headings are one `h1`
+  and one `h2` per section. No JavaScript: every section renders with its
+  content and all 61 images, the hero at 100 %. Known and left as is: the
+  hero's corner text uses `mix-blend-difference`, so over saturated magenta it
+  reads lower-contrast than the rest (axe can't measure blend modes).
