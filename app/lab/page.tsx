@@ -18,6 +18,11 @@ const directions = [
     name: "pilha",
     line: "prints de verdade em 3D. brilho, peso, arremesso, e o verso com o que ela escreveu.",
   },
+  {
+    href: "/lab/d",
+    name: "metamorfose",
+    line: "uma foto vira a outra dentro da print: derrete, ondula, fatia. molha sob o dedo. abre virando a página.",
+  },
 ];
 
 export default function Lab() {

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore, ViewTransition } from "react";
 
 import { DateStamp } from "@/components/brand/date-stamp";
 import { Chip } from "@/components/ui/chip";
@@ -82,23 +82,25 @@ export function ContactSheet({ photos, series }: { photos: Photo[]; series: Seri
         <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
           {visible.map((p) => (
             <li key={p.slug}>
-              <Link
-                href={`/foto/${p.slug}`}
-                className="group relative block aspect-[4/5] bg-noite shadow-[0_0_0_1px_var(--hairline)]"
-              >
-                <Image
-                  src={p.image}
-                  alt={p.alt}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1280px) 25vw, 16vw"
-                  placeholder="blur"
-                  className="object-cover"
-                />
-                <DateStamp
-                  date={p.date}
-                  className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
-                />
-              </Link>
+              <ViewTransition name={`foto-${p.slug}`} share="morph" default="none">
+                <Link
+                  href={`/foto/${p.slug}`}
+                  className="group relative block aspect-[4/5] bg-noite shadow-[0_0_0_1px_var(--hairline)]"
+                >
+                  <Image
+                    src={p.image}
+                    alt={p.alt}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1280px) 25vw, 16vw"
+                    placeholder="blur"
+                    className="object-cover"
+                  />
+                  <DateStamp
+                    date={p.date}
+                    className="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                  />
+                </Link>
+              </ViewTransition>
             </li>
           ))}
         </ul>

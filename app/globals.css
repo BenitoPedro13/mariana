@@ -131,3 +131,24 @@ a {
 .lab-cursor [data-cursor] {
   cursor: none;
 }
+
+/* The print morphs into the photo page (React <ViewTransition share="morph">). */
+::view-transition-group(.morph) {
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.25, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: morph-soften;
+}
+@keyframes morph-soften {
+  40% {
+    filter: blur(2px) brightness(1.15);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

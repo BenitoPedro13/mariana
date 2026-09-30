@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
 import { notFound } from "next/navigation";
 
 import { DateStamp } from "@/components/brand/date-stamp";
@@ -45,24 +46,27 @@ export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
       <Surface light={photo.light} />
       {/* The photo page never crops: the whole frame, as large as fits. */}
       <figure className="flex flex-col items-center">
-        <div
-          className="relative max-w-full shadow-[0_0_0_1px_var(--hairline)]"
-          style={{
-            aspectRatio: `${photo.image.width} / ${photo.image.height}`,
-            height: `min(80svh, calc((100vw - 2 * var(--gutter)) * ${photo.image.height / photo.image.width}))`,
-          }}
-        >
-          <Image
-            src={photo.image}
-            alt={photo.alt}
-            fill
-            sizes="(max-width: 640px) 100vw, 70vw"
-            placeholder="blur"
-            preload
-            className="object-contain"
-          />
-          <DateStamp date={photo.date} className="absolute right-3 bottom-3" />
-        </div>
+        {/* Shares a name with the print on the lab home and the /tudo thumb, so it morphs across. */}
+        <ViewTransition name={`foto-${photo.slug}`} share="morph" default="none">
+          <div
+            className="relative max-w-full shadow-[0_0_0_1px_var(--hairline)]"
+            style={{
+              aspectRatio: `${photo.image.width} / ${photo.image.height}`,
+              height: `min(80svh, calc((100vw - 2 * var(--gutter)) * ${photo.image.height / photo.image.width}))`,
+            }}
+          >
+            <Image
+              src={photo.image}
+              alt={photo.alt}
+              fill
+              sizes="(max-width: 640px) 100vw, 70vw"
+              placeholder="blur"
+              preload
+              className="object-contain"
+            />
+            <DateStamp date={photo.date} className="absolute right-3 bottom-3" />
+          </div>
+        </ViewTransition>
         <figcaption className="mt-6 flex w-full max-w-[60ch] flex-col gap-2 self-start">
           <Caption photo={photo} />
           {inSeries && (
