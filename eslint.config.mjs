@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Reference material (the saved OFFFORM page ships its own third-party JS).
+    "docs/**",
   ]),
 ]);
 
