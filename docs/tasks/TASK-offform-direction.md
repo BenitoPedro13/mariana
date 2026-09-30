@@ -430,5 +430,32 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   pointer, the row under it stays active while the page scrolls. Not pinned:
   the section is a plain scroll with a sticky left column, which reads the
   same on phones (stacked). Checked against frames `08-partners-contact`.
-- [ ] Step 7: S10–S11
-- [ ] Step 8: mobile, reduced motion, a11y
+- [x] Step 7: S10–S11 (`components/diario/footer.tsx`). The footer:
+  `anairam ——— mariana ■` builds as it rises; four columns (`diário`: counts
+  and years; `navegação`; `outras vistas`: `/tudo` and `/pilha`; `nota`: "uma
+  prévia. nada aqui é público ainda."; no social links, since we don't
+  publish her handle for her); `2026` bottom right. The name across the full
+  width is a canvas: each Bodoni letter masks rows of `anairam` in DM Mono
+  (12 px, down to 4 px on phones so ~14 rows fit), over a 7 % silhouette
+  because Bodoni's hairlines are thinner than a row. Hover opens only the
+  letter under the pointer: rows within 20 px split at the pointer x and part
+  24 px (lerp 0.16). Touch press turns it Rosa. Reduced motion: still. One
+  `role="img"` named "Mariana".
+  S11: the nav now has all five sections (`sobre · fotos · legendas · seleção ·
+  índice`). Jumps glide 900 ms under the header and focus the heading; the
+  S3 hold no longer stops a glide passing through it (`gliding()` in
+  `smooth-scroll.tsx`), and the active item is worked out from the scroll
+  position (the section holding 45 % of the screen) instead of an
+  IntersectionObserver, which lost track on long pinned sections. Checked
+  against frames `09-footer` and `10-nav-jumps`.
+- [x] Step 8: mobile, reduced motion, a11y. The whole home, top to bottom:
+  axe-core (WCAG 2.0–2.2 A/AA) finds nothing on desktop, on phones (390 × 844)
+  and with reduced motion, after fixing a `<dl>` without `<dt>` in sobre and
+  targets under 24 px (the hero's `ver todas`, the footer links). No
+  horizontal overflow at any scroll position on phones or desktop. Keyboard:
+  67 Tab stops through the page, each on screen and visible when focused (no
+  stop lands in a hidden stage or a clipped print); the headings are one `h1`
+  and one `h2` per section. No JavaScript: every section renders with its
+  content and all 61 images, the hero at 100 %. Known and left as is: the
+  hero's corner text uses `mix-blend-difference`, so over saturated magenta it
+  reads lower-contrast than the rest (axe can't measure blend modes).

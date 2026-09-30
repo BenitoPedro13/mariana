@@ -6,13 +6,15 @@ import { createContext, useCallback, useContext, useEffect, useRef } from "react
 /*
  * Lenis smooth scroll on desktop only (fine pointer, ≥ 1025 px, motion
  * allowed). Touch and reduced motion keep native scrolling. Anchor jumps
- * glide for 900 ms and land under the fixed header.
+ * glide for 900 ms and land under the fixed header. While one is gliding,
+ * `gliding()` is true, so sections don't hold the page mid-glide.
  */
 
 type Scroll = {
   to: (target: string | HTMLElement, opts?: { offset?: number }) => void;
   stop: () => void;
   start: () => void;
+  gliding: () => boolean;
 };
 
 const ScrollContext = createContext<Scroll | null>(null);
@@ -26,6 +28,7 @@ function easeInOutQuart(t: number) {
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenis = useRef<Lenis | null>(null);
   const stopped = useRef(false);
+  const glide = useRef(0);
 
   useEffect(() => {
     const ok =
@@ -53,7 +56,11 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     const el = typeof target === "string" ? document.querySelector<HTMLElement>(target) : target;
     if (!el) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.clearTimeout(glide.current);
+    glide.current = window.setTimeout(() => (glide.current = 0), 1100);
     if (lenis.current) {
+      stopped.current = false;
+      lenis.current.start();
       lenis.current.scrollTo(el, { offset, duration: 0.9, easing: easeInOutQuart });
     } else {
       const top = el.getBoundingClientRect().top + window.scrollY + offset;
@@ -70,7 +77,9 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     lenis.current?.start();
   }, []);
 
-  return <ScrollContext.Provider value={{ to, stop, start }}>{children}</ScrollContext.Provider>;
+  const gliding = useCallback(() => glide.current !== 0, []);
+
+  return <ScrollContext.Provider value={{ to, stop, start, gliding }}>{children}</ScrollContext.Provider>;
 }
 
 export function useSmoothScroll() {

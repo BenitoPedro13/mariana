@@ -264,7 +264,7 @@ export function DiarioHero({ photos, counts }: { photos: Photo[]; counts: Counts
             </li>
           ))}
         </ol>
-        <Link href="/tudo" className="d-glow group flex flex-col gap-1.5 pointer-events-auto">
+        <Link href="/tudo" className="d-glow group flex flex-col gap-1.5 py-1 pointer-events-auto">
           <span className="flex items-center justify-between">
             ver todas
             <Square />

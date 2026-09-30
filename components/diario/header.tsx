@@ -64,21 +64,31 @@ export function DiarioHeader({ nav, years }: { nav: NavItem[]; years: string }) 
     };
   }, []);
 
-  // The nav follows the section in view.
+  // The nav follows the section that holds the middle of the screen.
   useEffect(() => {
-    const els = nav
-      .map((n) => document.getElementById(n.id))
-      .filter((e): e is HTMLElement => Boolean(e));
-    if (els.length === 0) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (hit) setActive(hit.target.id);
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.01] },
-    );
-    els.forEach((e) => io.observe(e));
-    return () => io.disconnect();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const mid = window.innerHeight * 0.45;
+      let hit: string | null = null;
+      for (const n of nav) {
+        const el = document.getElementById(n.id);
+        if (el && el.getBoundingClientRect().top <= mid) hit = n.id;
+      }
+      const last = hit && document.getElementById(hit);
+      setActive(last && last.getBoundingClientRect().bottom > mid ? hit : null);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [nav]);
 
   const go = (id: string) => (e: React.MouseEvent) => {
@@ -121,7 +131,7 @@ export function DiarioHeader({ nav, years }: { nav: NavItem[]; years: string }) 
         <span className="size-[10px] border-[0.5px] border-noite bg-flash" title="dia" />
       </div>
 
-      <nav aria-label="seções" className="flex gap-7 max-lg:hidden [&_a]:-mt-3.5">
+      <nav aria-label="seções" className="flex gap-5 max-lg:hidden [&_a]:-mt-3.5">
         {links}
       </nav>
 

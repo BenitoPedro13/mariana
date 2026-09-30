@@ -95,7 +95,8 @@ export function AboutStrip({
       if (destaquesRow) destaquesRow.style.setProperty("--p", String(Math.min(1, Math.max(0, b))));
 
       // Hold for one real second the first time the stage pins.
-      if (!held.current && s > 0 && s < 200 && !reduced) {
+      // A nav jump glides straight through.
+      if (!held.current && s > 0 && s < 200 && !reduced && !scroll.gliding()) {
         held.current = true;
         scroll.stop();
         window.setTimeout(scroll.start, 1000);
@@ -182,11 +183,17 @@ export function AboutStrip({
             </div>
 
             <dl className="col-start-4 grid self-start grid-cols-3 gap-x-4 justify-self-end text-right max-md:col-start-1 max-md:justify-self-start max-md:text-left">
-              {meta.flat().map((m, i) => (
-                <dd key={i} className={i % 3 === 2 ? "tabular-nums" : "text-flash/60"}>
-                  {m}
-                </dd>
-              ))}
+              {meta.flat().map((m, i) =>
+                i % 3 === 2 ? (
+                  <dd key={i} className="tabular-nums">
+                    {m}
+                  </dd>
+                ) : (
+                  <dt key={i} className="text-flash/60">
+                    {m}
+                  </dt>
+                ),
+              )}
             </dl>
           </div>
         </div>
