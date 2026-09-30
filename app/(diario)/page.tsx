@@ -1,3 +1,4 @@
+import { DiarioFooter } from "@/components/diario/footer";
 import { DiarioHeader, type NavItem } from "@/components/diario/header";
 import { AboutStrip } from "@/components/diario/about-strip";
 import { Curtain } from "@/components/diario/curtain";
@@ -21,6 +22,8 @@ const NAV: NavItem[] = [
   { id: "sobre", label: "sobre" },
   { id: "fotos", label: "fotos" },
   { id: "legendas", label: "legendas" },
+  { id: "selecao", label: "seleção" },
+  { id: "indice", label: "índice" },
 ];
 
 const pick = (slug: string) => {
@@ -54,6 +57,7 @@ export default function Diario() {
         <Gallery photos={SELECAO.map(pick)} numbers={SELECAO.map((slug) => photos.indexOf(pick(slug)) + 1)} />
         <IndexList photos={photos} />
       </main>
+      <DiarioFooter nav={NAV} counts={counts} years={span} />
     </>
   );
 }

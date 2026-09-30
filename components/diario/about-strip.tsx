@@ -95,7 +95,8 @@ export function AboutStrip({
       if (destaquesRow) destaquesRow.style.setProperty("--p", String(Math.min(1, Math.max(0, b))));
 
       // Hold for one real second the first time the stage pins.
-      if (!held.current && s > 0 && s < 200 && !reduced) {
+      // A nav jump glides straight through.
+      if (!held.current && s > 0 && s < 200 && !reduced && !scroll.gliding()) {
         held.current = true;
         scroll.stop();
         window.setTimeout(scroll.start, 1000);
