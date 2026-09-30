@@ -45,3 +45,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OFFFORM reference site (third-party page, photos and code) and frames
+# extracted from the walkthrough recording. Study material only.
+docs/reference/OFFFORM*
+docs/reference/offform-frames/
