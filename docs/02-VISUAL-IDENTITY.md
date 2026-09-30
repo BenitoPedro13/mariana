@@ -9,10 +9,22 @@ sits at the edges like the markings on a print: a date stamp in the corner, a
 frame counter, a caption underneath. Colour comes from the photos. The frame adds
 one magenta, used once.
 
+### On the home: the diary
+
+The home (`/`) is built on the OFFFORM study: their technique and pacing,
+her palette, type, name and Reversal. The room is still Noite and the photos
+are still the only light, but they arrive large and edge to edge, and the
+chrome becomes a thin set of markings: DM Mono at 11 px, lowercase, 0.5 px
+Flash hairlines, and small Flash squares. Rosa is the only colour the frame
+adds (hover, focus glow, the active item). Magenta VDV doesn't appear on the
+diary at all; there is no fill that needs it. The Pile at `/pilha` keeps the
+treatment below as first written.
+
 ### Aesthetic risk
 
-The deliberate risk is **the flash cut**: every transition briefly whites out
-the screen and develops the next photo out of the overexposure. It's the one thing
+The deliberate risk is **the flash cut**: on the Pile, every transition briefly
+whites out the screen and develops the next photo out of the overexposure (on
+the diary, the preloader's one flash). It's the one thing
 people will remember, and the one thing that must be engineered carefully for
 photosensitivity (`04-UX-AND-MOTION.md` §5).
 
@@ -100,7 +112,7 @@ sweater hues, lifted to work as screen colours.
 | --- | --- | --- |
 | Display | **Bodoni Moda** (variable, `opsz` 6–96) | Wordmark, the About page's single line, the 404 |
 | Text | **Schibsted Grotesk** (variable, 400–900) | Captions, UI, body |
-| Data | **DM Mono** (400, 500) | Date stamp, counter, EXIF-style details |
+| Data | **DM Mono** (400, 500) | Date stamp, counter, EXIF-style details; on the diary, all UI text |
 
 All three are on Google Fonts, loaded through `next/font` with `display: swap`
 and Latin + Latin Extended subsets (Portuguese and Spanish diacritics).
@@ -126,6 +138,10 @@ camera's LCD instead of a terminal.
 - DM Mono uses `font-variant-numeric: tabular-nums` so the counter doesn't jitter.
 - No all-caps anywhere except inside her own captions.
 - Text is selectable everywhere.
+- On the diary, UI and captions are DM Mono at 11 px (the `--step-data`
+  floor), line height 1.35, letter-spacing 0.04em, lowercase as written. Nothing
+  goes below 11 px. Bodoni appears only in the wordmark and the footer's
+  ASCII name. Schibsted Grotesk stays on the other pages.
 
 ## 5. Graphic language
 
@@ -148,6 +164,20 @@ opacity on Noite), no drop shadow, no rounded corners. It rests at a slight
 rotation (−3° to +3°, fixed per photo and seeded from its id, so it never
 reshuffles) and lies on top of the few prints under it.
 
+### Hairlines, squares and the line build (the diary)
+
+- A 0.5 px Flash hairline (`--d-hair`) is the diary's one line: dividers under
+  rows, underlines, the progress track.
+- Squares mark things: 10 px beside the name and in the hero, 7 px ending a
+  label or riding a line. Flash or the text's own colour; the header's two
+  mood squares are the one pair, a Noite one in a Flash hairline and a Flash
+  one.
+- A section opens with a **line build**: `label ——— label ■`. The line starts
+  as a 3 px stub and grows to the full row with scroll, pushing the right
+  label and its square to the edge.
+- Where a square sits in the way of text, the text parts around it (the sobre
+  list, the curtain's captions) rather than the square moving.
+
 ### Grain
 
 One atmosphere layer: a static SVG noise at 4–6% opacity over Noite only. It
@@ -155,8 +185,12 @@ never animates and never sits on top of a photo.
 
 ### Rules
 
-- One magenta element per screen.
-- Nothing overlaps the photo except the date stamp.
+- One magenta element per screen (none on the diary).
+- Nothing overlaps the photo except the date stamp. On the diary, the only
+  exceptions are the hero's centre line and corner texts and the small frame
+  numbers, all in `mix-blend-difference` so they stay readable on any photo.
+- On the diary, dates are plain Flash text in the camera format (`’24 04 22`);
+  Amarelo Táxi stays reserved for the date stamp printed on a photo.
 - No icons, except a plain arrow in the prev/next controls and the Instagram link
   as text. No icon libraries in the chrome.
 - No emoji in chrome.
@@ -167,8 +201,11 @@ never animates and never sits on top of a photo.
   Crop only when she asks.
 - Preserve orientation as posted, including sideways frames (027). If it's
   sideways on Instagram, it's sideways here.
-- Show the whole frame on the home and photo page (`object-fit: contain`). The
-  contact sheet may crop to a uniform 4:5 thumbnail. The photo page never crops.
+- The photo page never crops (`object-fit: contain`), and neither does the
+  Pile. The contact sheet may crop to a uniform 4:5 thumbnail. The diary crops
+  to fill its frames (hero columns, strip, seleção, índice, the curtain) and
+  every cropped frame links to the uncropped photo page. Hover effects (the
+  ripple) distort the image in motion but never recolour it.
 - Alt text describes the image in plain pt-BR ("mariana de óculos rosa num
   corredor branco, foto de cima com flash"). It's written by us, reviewed by her,
   and never replaces the caption.

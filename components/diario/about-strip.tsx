@@ -333,7 +333,7 @@ function Strip({ photos }: { photos: Photo[] }) {
               </span>
               <span
                 aria-hidden="true"
-                className="absolute left-2 text-[10px] text-flash mix-blend-difference"
+                className="absolute left-2 text-flash mix-blend-difference"
                 style={{ top: `calc(${(h / 50) * 100}% - 18px)` }}
               >
                 {pad2(n + 1)}
