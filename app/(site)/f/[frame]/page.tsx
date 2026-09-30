@@ -2,9 +2,9 @@ import { Pile } from "@/components/pile/pile";
 import { photos } from "@/content/photos";
 import { pad2, parseFrame } from "@/lib/print";
 
-// `/?f=07` is rewritten here by proxy.ts, so a shared link opens on its print
+// `/pilha?f=07` is rewritten here by proxy.ts, so a shared link opens on its print
 // even without JavaScript, and every start frame is still a static page.
-// Nothing links to /f/… directly; the address bar keeps `/?f=07`.
+// Nothing links to /f/… directly; the address bar keeps `/pilha?f=07`.
 
 export function generateStaticParams() {
   return photos.map((_, i) => ({ frame: pad2(i + 1) }));

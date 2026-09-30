@@ -152,3 +152,114 @@ a {
     animation: none !important;
   }
 }
+
+/* ── Diário: the home rebuilt on the OFFFORM study (docs/tasks/TASK-offform-direction.md).
+   Their technique and pacing; her palette, type and name. ───────────────────── */
+
+[data-diario] {
+  --d-gutter: 20px;
+  --d-hair: 0.5px;
+  --d-ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --d-glow: 0 0 5px rgb(194 119 144 / 0.42), 0 0 11px rgb(194 119 144 / 0.2);
+  font-family: var(--font-dm-mono), ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 1024px) {
+  [data-diario] {
+    --d-gutter: 16px;
+  }
+}
+
+/* Hover and focus: Rosa with a soft glow (Magenta VDV is a fill, never text on Noite). */
+[data-diario] .d-glow {
+  transition:
+    color 280ms ease,
+    text-shadow 280ms ease;
+}
+[data-diario] .d-glow:hover,
+[data-diario] .d-glow:focus-visible,
+[data-diario] .d-glow[aria-current="true"] {
+  color: var(--rosa);
+  text-shadow: var(--d-glow);
+}
+
+/* The square cursor replaces the pointer on fine pointers only. */
+html.d-cursor [data-diario],
+html.d-cursor [data-diario] * {
+  cursor: none;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Preloader state, set before first paint by the inline script in the layout.
+   The failsafe opens everything after 6 s if the client never takes over. */
+html.diario-loading body {
+  overflow: hidden;
+}
+html.diario-loading [data-d-reveal] {
+  clip-path: inset(0 0 100% 0);
+  animation: d-failsafe-reveal 0s 6s forwards;
+}
+html.diario-loading [data-d-after-intro] {
+  opacity: 0;
+  animation: d-failsafe-show 0s 6s forwards;
+}
+@keyframes d-failsafe-reveal {
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes d-failsafe-show {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hero on phones: the three photos share one frame and take turns (9 s loop). */
+@keyframes d-turns {
+  0%,
+  30% {
+    opacity: 1;
+  }
+  36%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+[data-diario] .d-tip {
+  display: none;
+}
+html.diario-loading [data-diario] .d-tip {
+  display: block;
+}
+html.diario-loading [data-diario] .d-end {
+  visibility: hidden;
+}
+[data-diario] .d-count-live {
+  display: none;
+}
+html.diario-loading [data-diario] .d-count-live {
+  display: inline;
+}
+html.diario-loading [data-diario] .d-count-done {
+  display: none;
+}
+html.diario-loading [data-diario] .d-line {
+  transform: scaleX(0);
+}

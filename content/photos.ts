@@ -14,6 +14,16 @@ import ref021 from "@/docs/reference/instagram/anairamodarnoc_021.jpg";
 import ref023 from "@/docs/reference/instagram/anairamodarnoc_023.jpg";
 import ref025 from "@/docs/reference/instagram/anairamodarnoc_025.jpg";
 import ref030 from "@/docs/reference/instagram/anairamodarnoc_030.jpg";
+import ref002 from "@/docs/reference/instagram/anairamodarnoc_002.jpg";
+import ref006 from "@/docs/reference/instagram/anairamodarnoc_006.jpg";
+import ref008 from "@/docs/reference/instagram/anairamodarnoc_008.jpg";
+import ref010 from "@/docs/reference/instagram/anairamodarnoc_010.jpg";
+import ref011 from "@/docs/reference/instagram/anairamodarnoc_011.jpg";
+import ref014 from "@/docs/reference/instagram/anairamodarnoc_014.jpg";
+import ref019 from "@/docs/reference/instagram/anairamodarnoc_019.jpg";
+import ref020 from "@/docs/reference/instagram/anairamodarnoc_020.jpg";
+import ref022 from "@/docs/reference/instagram/anairamodarnoc_022.jpg";
+import ref029 from "@/docs/reference/instagram/anairamodarnoc_029.jpg";
 
 export type { Light, Photo } from "@/content/types";
 
@@ -113,6 +123,117 @@ const entries: Photo[] = [
     author: "unconfirmed",
     source: "reference",
     others: 2,
+  },
+  {
+    slug: "ref-002",
+    image: ref002,
+    alt: "vista de cima com lente olho de peixe: uma mulher de óculos gatinho rosa, blusa rosa transparente e saia de paetê vinho num canto de paredes brancas",
+    caption: "meu mundinho VDV 🎀🔥🫦💖🥺 gente vocês acreditam que eu conheci a mente por trás de girls in the house? 😭",
+    date: "2024-09-20",
+    light: "day",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-006",
+    image: ref006,
+    alt: "uma mulher de vestido preto curto sentada num trono sob uma grande cruz de paetê azul, com luz vermelha e magenta dos lados",
+    caption: "i hear you call my name and it feels like home",
+    captionLang: "en",
+    date: "2024-04-22",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-008",
+    image: ref008,
+    alt: "de perto, com flash: um pedaço de bolo com camadas de creme branco, rosa e chocolate derretendo",
+    caption: "valeu março 🍦🦖🌽🏖️👱‍♀️🤪🐟🐠💃🏼🍰🎂🍓🥳🎉😵💋💓",
+    date: "2024-04-05",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-010",
+    image: ref010,
+    alt: "selfie de cima com flash à noite: uma mulher de cabelo preso e corset cinza, deitada, com o braço tatuado à frente da câmera",
+    caption: "esse dia foi bafo meus amores 💅🏻",
+    date: "2024-03-28",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-011",
+    image: ref011,
+    alt: "à noite, numa calçada ao lado de sacos de areia e entulho: uma mulher de cropped e saia azul-cobalto e botas brancas de pelúcia",
+    caption: "pratiquem a reciclagem 🫵🏻💋💙🦋🌹💖😍",
+    date: "2024-03-18",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-014",
+    image: ref014,
+    alt: "selfie inclinada com flash: uma mulher de brincos de globo espelhado e blazer risca de giz, perto de uma janela escura",
+    caption: "🪩✨🫶🏻",
+    date: "2023-12-31",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-019",
+    image: ref019,
+    alt: "selfie no espelho de um banheiro de cabines rosa: uma mulher com tiara de orelhas de gato e roupa preta esconde o rosto com o celular",
+    caption: "meu mundinho astral 🐈‍⬛💅🏻🤭💖",
+    date: "2023-10-27",
+    light: "day",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-020",
+    image: ref020,
+    alt: "à noite, diante de um muro coberto de cartazes: uma mulher de óculos escuros, top metálico e saia jeans longa",
+    caption: "🥋🎀💘🫶🏻💖",
+    date: "2023-10-03",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-022",
+    image: ref022,
+    alt: "à noite, num terreno com telhas empilhadas: uma mulher de óculos, maiô recortado rosa, saia de cetim e botas brancas de pelúcia",
+    caption: "🤧💖💅🏻🫶🏻💘😮‍💨✨",
+    date: "2023-08-20",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
+  },
+  {
+    slug: "ref-029",
+    image: ref029,
+    alt: "à noite, ao lado de um táxi amarelo: uma mulher de top preto e calça cargo verde sorri segurando algo junto ao peito",
+    caption: "coé agostinho, me dá essa moral",
+    date: "2023-02-16",
+    light: "night",
+    author: "unconfirmed",
+    source: "reference",
+    others: 0,
   },
 ];
 

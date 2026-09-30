@@ -25,7 +25,13 @@ The source of truth is the numbered set in `docs/`:
 
 The current task must have a document in `docs/tasks/` before work begins.
 
-## 2. Current phase: feel prototype
+## 2. Current phase: the diary direction
+
+The home is being rebuilt on the OFFFORM study (`docs/tasks/TASK-offform-direction.md`):
+their technique and pacing, with her palette, type, name and Reversal. It lives at `/`
+(`app/(diario)`); the earlier Pile is kept at `/pilha` for comparison, and the
+four home studies at `/lab`. Brand docs 01–04 still describe Direct Flash and
+get rewritten once this direction settles.
 
 The Next.js app exists (`docs/tasks/TASK-feel-prototype.md`). It runs the Pile,
 the flash cut, and the Reversal on 8 reference photos, so the feel can be judged
@@ -55,8 +61,9 @@ These rules outrank every design decision:
 - Photos of other people need their consent before they appear. A friend's face
   is not ours to publish because it was on her Instagram. Record `others` and
   `people` per photo; `content/check.ts` fails the build when they don't add up.
-- The Instagram reference photos are gitignored and never committed. They are
-  mood material, not site content.
+- The Instagram reference photos are mood material, not site content. Benito
+  chose to keep them in git (commit `2b6cdaf`) while the repo is a working
+  prototype; they must never ship in a public build (`ANAIRAM_PUBLIC=1` fails on them).
 - Strip GPS and device EXIF from every image before it ships. Read the capture
   date first if we need it.
 - Captions are hers, verbatim: emoji, typos, mixed languages and all. Never

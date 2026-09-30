@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * `/?f=07` → the prerendered `/f/07`, keeping the address as typed. The Pile
+ * `/pilha?f=07` → the prerendered `/f/07`, keeping the address as typed. The Pile
  * then renders on its seventh print on the server, without JavaScript.
  */
 export function proxy(request: NextRequest) {
@@ -14,5 +14,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/",
+  matcher: "/pilha",
 };
