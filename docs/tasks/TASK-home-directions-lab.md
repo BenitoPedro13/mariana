@@ -1,6 +1,6 @@
 # TASK: Home directions lab
 
-## 0. Status (2026-09-29): three directions built, waiting for Benito's pick
+## 0. Status (2026-09-29): four directions built, waiting for Benito's pick
 
 ## 1. Current scenario
 
@@ -32,6 +32,20 @@ current site is untouched.
   that follows the pointer. Flicked prints spin off the pile. `virar` (or V) turns
   the print over, and the back shows her caption and the lab stamp. The name sits
   in outline behind the pile, with a Bodoni odometer.
+
+- **d · metamorfose** (after Benito: "i really liked the name inverting thing"
+  and asked for transitions like morphing): A's room with C's physical print.
+  The photo inside the print morphs into the next in WebGL
+  (`components/lab/morph-stage.tsx`), in three selectable modes: **derreter**
+  (each photo displaces the other by its brightness), **onda** (a lens ring
+  runs out from where you touched), and **fatias** (strips slide past each
+  other). The flash peaks at 46% of the morph, and the room cuts there. Holding
+  the print makes it wet: the image ripples under the finger. Flinging it changes
+  the photo in the fling's direction. Clicking opens `/foto/[slug]`, and the print
+  becomes the photo page through React `<ViewTransition name="foto-…" share="morph">`,
+  also wired on the `/tudo` thumbs and the photo page. The name leans toward the
+  pointer on Bodoni Moda's axes (`wght` 400 → 900, `opsz` 96 → 12, in
+  `components/lab/use-pressure.ts`) and still turns round its i.
 
 Shared: `components/brand/use-reversal.tsx` (the Reversal as a hook: timed,
 scrubbed, and at any size), `components/lab/*`. The site's routes move into `app/(site)`

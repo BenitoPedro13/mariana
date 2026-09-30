@@ -11,6 +11,7 @@ const directions = [
   { href: "/lab/a", key: "a", name: "revelação" },
   { href: "/lab/b", key: "b", name: "contato" },
   { href: "/lab/c", key: "c", name: "pilha" },
+  { href: "/lab/d", key: "d", name: "metamorfose" },
 ];
 
 /** The lab's only chrome: which direction you're in, and the flash switch. */
