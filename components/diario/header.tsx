@@ -7,10 +7,12 @@ import { useSmoothScroll } from "@/components/diario/smooth-scroll";
 import { cn } from "@/lib/utils";
 
 /*
- * S1 · Header. Fixed and transparent, five columns: the name (which turns on
+ * S1 · Header. Fixed, five columns: the name (which turns on
  * hover), what this is, her two moods as two squares (a Noite one and a Flash
  * one), the section nav, and the years. The active section is Rosa. It fades
  * in once the hero intro has finished. At ≤ 1024 px: name · squares · menu.
+ * Transparent over the hero; past it, a Noite bar (a hard cut) so text
+ * scrolling underneath never runs into it.
  */
 
 export const INTRO_DONE_EVENT = "diario:intro-done";
@@ -37,6 +39,28 @@ export function DiarioHeader({ nav, years }: { nav: NavItem[]; years: string }) 
     return () => {
       window.removeEventListener(INTRO_DONE_EVENT, show);
       window.clearTimeout(failsafe);
+    };
+  }, []);
+
+  // Solid once the hero has gone.
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      el.toggleAttribute("data-solid", window.scrollY > window.innerHeight - 60);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
@@ -82,7 +106,7 @@ export function DiarioHeader({ nav, years }: { nav: NavItem[]; years: string }) 
     <header
       ref={bar}
       data-d-after-intro
-      className="fixed inset-x-0 top-0 z-40 grid grid-cols-[1.1fr_1.2fr_0.45fr_1fr_0.85fr] items-start px-[var(--d-gutter)] pt-5 text-flash max-lg:grid-cols-[1fr_auto_auto] max-lg:items-center max-lg:gap-4"
+      className="fixed inset-x-0 top-0 z-40 grid grid-cols-[1.1fr_1.2fr_0.45fr_1fr_0.85fr] items-start px-[var(--d-gutter)] pt-5 pb-2 text-flash data-[solid]:bg-noite max-lg:pb-0 max-lg:grid-cols-[1fr_auto_auto] max-lg:items-center max-lg:gap-4"
     >
       <Wordmark className="-mt-1" />
 
