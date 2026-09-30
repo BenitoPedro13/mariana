@@ -6,20 +6,23 @@ import { FLASH_STORAGE_KEY } from "@/lib/flash-key";
 
 import "./globals.css";
 
+// Only `latin` is preloaded; other ranges load if a caption ever needs them.
 const bodoni = Bodoni_Moda({
   variable: "--font-bodoni",
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   axes: ["opsz"],
 });
 
+// The diary home doesn't use it; the pages that do fetch it on first use.
 const schibsted = Schibsted_Grotesk({
   variable: "--font-schibsted",
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
+  preload: false,
 });
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
-  subsets: ["latin", "latin-ext"],
+  subsets: ["latin"],
   weight: ["400", "500"],
 });
 

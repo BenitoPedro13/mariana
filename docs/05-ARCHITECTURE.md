@@ -169,6 +169,12 @@ feature-local `hooks.ts`. Components stay thin.
 | Fonts | 3 families, subsetted, ≤ 120 kB total |
 | Images eager on `/` | 3 (current + next two). Everything else lazy |
 
+Measured on the diary home (`docs/tasks/TASK-performance-pass.md`): CLS 0,
+fonts 109 kB, 3 eager images. LCP (~4.0 s on a throttled phone) and JS
+(~205 kB) are over: the budgets were set for the Pile, and the diary's
+preloader holds the photos for ≥ 1.5 s on purpose. Recorded as a trade-off,
+not a target to game.
+
 ## 8. Delivery phases
 
 | Phase | Output | Gate |
