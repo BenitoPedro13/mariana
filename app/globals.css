@@ -263,3 +263,18 @@ html.diario-loading [data-diario] .d-count-done {
 html.diario-loading [data-diario] .d-line {
   transform: scaleX(0);
 }
+
+/* S4 · the featured strip: each frame cropped from the bottom, opened on hover. */
+[data-diario] .d-strip-media {
+  clip-path: inset(0 0 var(--cb, 0%) 0);
+  transition: clip-path 650ms var(--d-ease);
+}
+[data-diario] a:hover .d-strip-media,
+[data-diario] a:focus-visible .d-strip-media {
+  clip-path: inset(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-diario] .d-strip-media {
+    transition: none;
+  }
+}

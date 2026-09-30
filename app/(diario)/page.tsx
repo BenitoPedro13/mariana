@@ -1,4 +1,5 @@
 import { DiarioHeader, type NavItem } from "@/components/diario/header";
+import { AboutStrip } from "@/components/diario/about-strip";
 import { DiarioHero } from "@/components/diario/hero";
 import { Surface } from "@/components/site/surface";
 import { photos } from "@/content/photos";
@@ -28,12 +29,7 @@ export default function Diario() {
       <DiarioHeader nav={NAV} years={span} />
       <main>
         <DiarioHero photos={hero} counts={counts} />
-        {/* Next steps (S3–S10) land here; the hero's centre line stops above this row. */}
-        <section id="sobre" aria-label="sobre" className="min-h-svh px-[var(--d-gutter)] pt-24">
-          <p data-hero-stop className="text-flash/60">
-            sobre · em construção
-          </p>
-        </section>
+        <AboutStrip photos={photos} counts={counts} years={[years[0], years.at(-1)!]} />
       </main>
     </>
   );

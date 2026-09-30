@@ -365,7 +365,20 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   hold on scroll, phones (one frame, 9 s turns), reduced motion and no-JS (all
   visible at once), and the Tab order. The frames weren't available in the cloud
   session, so this was checked against the plan's text.
-- [ ] Step 2: S3–S4
+- [x] Step 2: S3–S4 (`components/diario/about-strip.tsx`, `line-build.tsx`).
+  One sticky stage, pinned for 248 px + 70vh. `sobre ——— anairam ■` builds as
+  it rises (65vh → 36vh); pinned, the list rises through a fixed 7 px square at
+  half speed and each line parts around it (split at 42 px, 20 px clear each
+  side, open within 40 px); then `destaques ——— fotos ■` builds. One 1 s hold
+  the first time it pins (smooth scroll only). The strip: 20vw frames (46vw on
+  phones), each cropped from the bottom to its own height, opens on hover or
+  focus (650 ms), drifts left (one loop = 150 s, paused offscreen and with
+  reduced motion) and drags (a drag never opens a photo). Clones are
+  `aria-hidden` and out of the Tab order. The header turns into a Noite bar
+  past the hero, so text scrolling under it stays readable. Checked against
+  frames `03-hero-exit-about` and `04-featured-strip` in Chromium at 1440 × 804,
+  phones at 390, and with reduced motion. The about copy only says what the
+  photos show (dates, counts, flash, her captions); nothing about her is invented.
 - [ ] Step 3: S5
 - [ ] Step 4: S6
 - [ ] Step 5: S7
