@@ -64,7 +64,10 @@ Tag. They are Arthur's. The two sites share a way of working, not an identity.
 These rules outrank every design decision:
 
 - Nothing goes public until Mariana says yes. Until then the site lives behind a
-  protected preview with `noindex`.
+  protected preview with `noindex`. Indexing needs `ANAIRAM_PUBLIC=1` and
+  `ANAIRAM_INDEX=1` (`lib/site.ts`): her yes, and her wanting to be found.
+- Link previews (`opengraph-image`) never carry a photo until she picks one of
+  her own for it.
 - Photos of other people need their consent before they appear. A friend's face
   is not ours to publish because it was on her Instagram. Record `others` and
   `people` per photo; `content/check.ts` fails the build when they don't add up.

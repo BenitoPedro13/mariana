@@ -1,11 +1,14 @@
-import type { Metadata } from "next";
-
 import { ContactSheet } from "@/components/site/contact-sheet";
 import { Surface } from "@/components/site/surface";
 import { photos } from "@/content/photos";
 import { series } from "@/content/series";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "tudo" };
+export const metadata = pageMetadata({
+  title: "tudo",
+  description: "todas as fotos da Mariana, numa folha só.",
+  path: "/tudo",
+});
 
 export default function Tudo() {
   return (

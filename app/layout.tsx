@@ -3,6 +3,7 @@ import { Bodoni_Moda, DM_Mono, Schibsted_Grotesk } from "next/font/google";
 
 import { FlashLayer } from "@/components/pile/flash-layer";
 import { FLASH_STORAGE_KEY } from "@/lib/flash-key";
+import { indexable, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 import "./globals.css";
 
@@ -27,10 +28,20 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "anairam", template: "anairam — %s" },
-  description: "fotos da Mariana.",
-  // Protected preview until Mariana says yes (CLAUDE.md §4).
-  robots: { index: false, follow: false },
+  metadataBase: SITE_URL,
+  title: { default: SITE_NAME, template: `${SITE_NAME} — %s` },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  // Pages set their own through pageMetadata(); this covers the rest (the lab).
+  openGraph: { type: "website", siteName: SITE_NAME, locale: "pt_BR", title: SITE_NAME, description: SITE_DESCRIPTION },
+  twitter: { card: "summary_large_image" },
+  // Protected preview until Mariana says yes, and indexed only if she wants
+  // it (CLAUDE.md §4, lib/site.ts).
+  robots: indexable
+    ? { index: true, follow: true }
+    : { index: false, follow: false, noimageindex: true },
+  // The date stamps and counters are numbers, not phone numbers.
+  formatDetection: { telephone: false, date: false, address: false, email: false },
 };
 
 export const viewport: Viewport = {

@@ -8,6 +8,20 @@ import { IndexList } from "@/components/diario/index-list";
 import { Roster } from "@/components/diario/roster";
 import { Surface } from "@/components/site/surface";
 import { photos } from "@/content/photos";
+import { pageMetadata, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
+export const metadata = pageMetadata({ path: "/" });
+
+// Names the site in search results. Facts only: what it is and whose photos.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  alternateName: "fotos da Mariana",
+  url: SITE_URL.href,
+  inLanguage: "pt-BR",
+  description: SITE_DESCRIPTION,
+};
 
 // The three hero photos: a night, a day and a night, one saturated colour each.
 const HERO = ["ref-006", "ref-016", "ref-029"];
@@ -44,6 +58,10 @@ export default function Diario() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <Surface light="night" />
       <DiarioHeader nav={NAV} years={span} />
       <main>

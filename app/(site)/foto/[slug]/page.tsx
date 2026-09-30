@@ -11,7 +11,8 @@ import { FlashLink } from "@/components/pile/flash-link";
 import { Surface } from "@/components/site/surface";
 import { photoIndex, photos } from "@/content/photos";
 import { series } from "@/content/series";
-import { pad2 } from "@/lib/print";
+import { formatStamp, pad2 } from "@/lib/print";
+import { pageMetadata } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function generateStaticParams() {
@@ -25,7 +26,15 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const i = photoIndex(slug);
-  return { title: i < 0 ? "foto" : `foto ${pad2(i + 1)}` };
+  if (i < 0) return { title: "foto" };
+  const photo = photos[i];
+  // Her caption, verbatim, when there is one; the counter and stamp when not.
+  return pageMetadata({
+    title: `foto ${pad2(i + 1)}`,
+    description: photo.caption ?? `${pad2(i + 1)} / ${pad2(photos.length)}, ${formatStamp(photo.date)}.`,
+    path: `/foto/${photo.slug}`,
+    ownCard: true,
+  });
 }
 
 const quiet = "inline-flex min-h-11 items-center text-ink-quiet hover:text-link";
@@ -44,6 +53,7 @@ export default async function FotoPage(props: PageProps<"/foto/[slug]">) {
   return (
     <main className="px-[var(--gutter)] pb-6">
       <Surface light={photo.light} />
+      <h1 className="sr-only">foto {pad2(i + 1)}</h1>
       {/* The photo page never crops: the whole frame, as large as fits. */}
       <figure className="flex flex-col items-center">
         {/* Shares a name with the print on the lab home and the /tudo thumb, so it morphs across. */}
