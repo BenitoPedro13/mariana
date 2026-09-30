@@ -63,7 +63,6 @@ export function DiarioHero({ photos, counts }: { photos: Photo[]; counts: Counts
     scroll.stop();
     window.scrollTo(0, 0);
 
-    const t0 = performance.now();
     let shown = 0;
     let raf = 0;
     const total = photos.length;
@@ -104,7 +103,8 @@ export function DiarioHero({ photos, counts }: { photos: Photo[]; counts: Counts
     };
 
     const tick = () => {
-      const elapsed = performance.now() - t0;
+      // From navigation start, not hydration: a slow phone has already waited.
+      const elapsed = performance.now();
       const byTime = Math.min(1, elapsed / FLOOR_MS);
       const byAssets = elapsed > SAFETY_MS ? 1 : loaded.current / total;
       const target = Math.min(byTime, byAssets);
