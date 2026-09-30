@@ -409,7 +409,18 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   a still column instead (`lib/motion-preference.ts`): the photo, then each
   print with its caption. Checked against frames `06-services-curtain` in
   Chromium at 1440 × 804, phones at 390, and with reduced motion.
-- [ ] Step 5: S7
+- [x] Step 5: S7 (`components/diario/gallery.tsx`). `#selecao`: a sticky stage
+  pinned for 115vh; `seleção ——— 05 fotos ■` builds over the first 40 %. The
+  frame (34 % → the edge, 68vh, 45vh on phones) comes in 150 px low and parks.
+  Five photos (ref-003, ref-019, ref-011, ref-025, ref-022): hold 2300 ms, the
+  curtain rises 950 ms, the next opens 950 ms. It runs only while the stage is
+  stuck (the frame fully in view on phones), holds on hover or focus, has
+  `anterior` / `pausar` / `próxima` (WCAG 2.2.2), and goes back to the first
+  photo once the section is off-screen. The left column shows the diary number,
+  her caption verbatim, the date and light, `ver foto`, and the progress
+  `01 ■──── 05`. Reduced motion: no autoplay and no pause button; the arrows
+  cut straight to the photo. No wave hover here: five stacked WebGL canvases
+  cost more than the effect is worth. Checked against frames `07-campaigns`.
 - [ ] Step 6: S8 (S9 dropped)
 - [ ] Step 7: S10–S11
 - [ ] Step 8: mobile, reduced motion, a11y
