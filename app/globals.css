@@ -181,7 +181,8 @@ a {
 }
 [data-diario] .d-glow:hover,
 [data-diario] .d-glow:focus-visible,
-[data-diario] .d-glow[aria-current="true"] {
+[data-diario] .d-glow[aria-current="true"],
+[data-diario] .d-glow[data-active] {
   color: var(--rosa);
   text-shadow: var(--d-glow);
 }

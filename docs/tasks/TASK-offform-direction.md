@@ -421,6 +421,14 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   `01 ■──── 05`. Reduced motion: no autoplay and no pause button; the arrows
   cut straight to the photo. No wave hover here: five stacked WebGL canvases
   cost more than the effect is worth. Checked against frames `07-campaigns`.
-- [ ] Step 6: S8 (S9 dropped)
+- [x] Step 6: S8 (`components/diario/index-list.tsx`; S9 dropped). `#indice`:
+  S5 already lists every photo, so the index is by month instead: 13 rows,
+  newest first, each the month, its count, and a link to that month's first
+  photo. `índice ——— por mês ■` builds as it rises. Left (32 %, sticky): a 4:3
+  crop of the active month's first photo (all loaded, swapped at once) and
+  `foto · luz · ano`. Hover or focus makes a row active and Rosa; with a still
+  pointer, the row under it stays active while the page scrolls. Not pinned:
+  the section is a plain scroll with a sticky left column, which reads the
+  same on phones (stacked). Checked against frames `08-partners-contact`.
 - [ ] Step 7: S10–S11
 - [ ] Step 8: mobile, reduced motion, a11y

@@ -3,6 +3,7 @@ import { AboutStrip } from "@/components/diario/about-strip";
 import { Curtain } from "@/components/diario/curtain";
 import { Gallery } from "@/components/diario/gallery";
 import { DiarioHero } from "@/components/diario/hero";
+import { IndexList } from "@/components/diario/index-list";
 import { Roster } from "@/components/diario/roster";
 import { Surface } from "@/components/site/surface";
 import { photos } from "@/content/photos";
@@ -51,6 +52,7 @@ export default function Diario() {
           photos={CURTAIN.photos.map(pick)}
         />
         <Gallery photos={SELECAO.map(pick)} numbers={SELECAO.map((slug) => photos.indexOf(pick(slug)) + 1)} />
+        <IndexList photos={photos} />
       </main>
     </>
   );
