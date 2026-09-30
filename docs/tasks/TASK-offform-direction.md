@@ -379,7 +379,20 @@ and wrapped for photos by `components/diario/ripple-image.tsx`.
   frames `03-hero-exit-about` and `04-featured-strip` in Chromium at 1440 × 804,
   phones at 390, and with reduced motion. The about copy only says what the
   photos show (dates, counts, flash, her captions); nothing about her is invented.
-- [ ] Step 3: S5
+- [x] Step 3: S5 (`components/diario/roster.tsx`). `#fotos`: a sticky stage
+  pinned for 110vh. `fotos ——— o diário ■` builds over the first 40 % of the
+  pin (to the middle of the row, where the switch starts); a list taller than
+  the stage rises through the rest. The `noite` / `dia` switch (toggle buttons
+  with `aria-pressed`, the count announced politely) builds once on entry:
+  square below-left, along the growing underline, up to the word, the two
+  options 90 ms apart. Rows: the photo's diary number · her caption verbatim
+  (ellipsis on screen, whole in the DOM, `lang` kept) · the date, 48 px (40 px
+  ≤ 1024), hairline under each. Hover or focus: Rosa with the glow, and a
+  260 × 360 preview that follows the pointer (x + 24, lerp 0.16, 20 px from
+  every edge, never below the section), or sits by the row when focused by
+  keyboard. The previews load only when the section is near. Phones: no pin,
+  no preview. Reduced motion: the switch is already built, the preview snaps.
+  Checked against frames `05-roster`.
 - [ ] Step 4: S6
 - [ ] Step 5: S7
 - [ ] Step 6: S8 (S9 dropped)

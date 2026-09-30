@@ -1,6 +1,7 @@
 import { DiarioHeader, type NavItem } from "@/components/diario/header";
 import { AboutStrip } from "@/components/diario/about-strip";
 import { DiarioHero } from "@/components/diario/hero";
+import { Roster } from "@/components/diario/roster";
 import { Surface } from "@/components/site/surface";
 import { photos } from "@/content/photos";
 
@@ -30,6 +31,7 @@ export default function Diario() {
       <main>
         <DiarioHero photos={hero} counts={counts} />
         <AboutStrip photos={photos} counts={counts} years={[years[0], years.at(-1)!]} />
+        <Roster photos={photos} counts={counts} />
       </main>
     </>
   );

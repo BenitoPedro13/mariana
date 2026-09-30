@@ -278,3 +278,41 @@ html.diario-loading [data-diario] .d-line {
     transition: none;
   }
 }
+
+/* S5 · the switch builds once: square below-left → along the underline → up to the word. */
+[data-diario] .d-switch-sq {
+  left: calc(100% + 8px);
+  top: calc(50% - 3.5px);
+}
+[data-diario] .d-switch-line {
+  transform-origin: left;
+}
+[data-diario] .d-switch[data-armed]:not([data-built]) .d-switch-line {
+  transform: scaleX(0);
+}
+[data-diario] .d-switch[data-armed]:not([data-built]) .d-switch-sq {
+  left: 0;
+  top: calc(100% - 0.5px);
+}
+[data-diario] .d-switch[data-built] .d-switch-line {
+  transition: transform 520ms var(--d-ease) var(--d-delay, 0ms);
+}
+[data-diario] .d-switch[data-built] .d-switch-sq {
+  transition:
+    left 520ms var(--d-ease) var(--d-delay, 0ms),
+    top 280ms var(--d-ease) calc(var(--d-delay, 0ms) + 520ms);
+}
+
+/* S5 · the row preview opens top → bottom like the hero curtain. */
+[data-diario] .d-preview {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 380ms var(--d-ease);
+}
+[data-diario] .d-preview[data-open] {
+  clip-path: inset(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-diario] .d-preview {
+    transition: none;
+  }
+}
