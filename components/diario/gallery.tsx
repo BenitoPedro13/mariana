@@ -222,7 +222,7 @@ export function Gallery({ photos, numbers }: { photos: Photo[]; numbers: number[
                 </Link>
               ))}
             </div>
-            <span aria-hidden="true" className="absolute bottom-2 left-2 text-[10px] mix-blend-difference">
+            <span aria-hidden="true" className="absolute bottom-2 left-2 mix-blend-difference">
               {pad2(numbers[index])}
             </span>
           </div>

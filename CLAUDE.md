@@ -32,17 +32,17 @@ their technique and pacing, with her palette, type, name and Reversal. It lives 
 (`app/(diario)`, components in `components/diario/`): preloader and hero, sobre and
 destaques, fotos, legendas, seleção, índice, and the footer, all eight build steps
 done (§9 of the task). The earlier Pile is kept at `/pilha` for comparison, and the
-four home studies at `/lab`. Brand docs 01–04 and §6 below still describe Direct
-Flash and the Pile as the home; they get rewritten once Benito signs off on the feel.
+four home studies at `/lab`. Docs 02–05 describe both: the diary as the home and
+the Pile as it was first written.
 
 The diary sections share a few rules: scroll-driven work happens in one rAF per
 section, a pinned stage never pins on phones unless the section needs it (the
 curtain does), reduced motion and no-JS get a still version with the same content,
 and anything that moves by itself can be paused (WCAG 2.2.2).
 
-The Next.js app exists (`docs/tasks/TASK-feel-prototype.md`). It runs the Pile,
-the flash cut, and the Reversal on 8 reference photos, so the feel can be judged
-on the real stack. It is a prototype: its photos are Instagram reference
+The Next.js app exists (`docs/tasks/TASK-feel-prototype.md`). It runs the diary,
+the Pile, the flash cut, and the Reversal on 18 reference photos, so the feel can
+be judged on the real stack. It is a prototype: its photos are Instagram reference
 material, not site content, and it is never deployed publicly. The brand docs
 are still under review. Change them first when the feel says they're wrong.
 
@@ -111,16 +111,21 @@ Components consume semantic tokens, never raw hex:
 
 ## 6. Experience rules
 
-- The home is **the Pile**: her photos as a stack of prints you go through one at
-  a time. One gesture moves one print: a flick, drag, wheel notch, swipe, or arrow
-  key. It is never a carousel strip or a masonry wall.
-- Every cut between photos is a **flash cut**: one short white-out that develops into
-  the next photo. It happens once per cut and never more than three times in a second.
-- The surface follows the photo. Night photos sit in the Noite room, day photos on
-  the Flash sheet. It's a hard cut, never a fade.
-- `/tudo` is the full contact sheet and the complete low-motion alternative to the
-  home. Everything reachable in the Pile is reachable there.
-- Mobile keeps the Pile. It does not turn into stacked cards.
+- The home is **the diary** (`/`): one long scroll of sections on the OFFFORM
+  study (`docs/04-UX-AND-MOTION.md` §2). It is never a carousel strip of cards or
+  a masonry wall; each section has one job and one photo in charge.
+- **The Pile** lives at `/pilha`: her photos as a stack of prints you go through one
+  at a time. One gesture moves one print: a flick, drag, wheel notch, swipe, or
+  arrow key.
+- Every cut between photos in the Pile and on `/foto/[slug]` is a **flash cut**: one
+  short white-out that develops into the next photo, never more than three in a
+  second. On the diary, the preloader's single flash is the only one.
+- The surface follows the photo in the Pile and on photo pages (night on Noite,
+  day on the Flash sheet, a hard cut, never a fade). The diary stays in the Noite room.
+- `/tudo` is the full contact sheet and the complete low-motion alternative.
+  Everything reachable on the home or in the Pile is reachable there.
+- Mobile keeps every diary section and keeps the Pile. Neither turns into
+  stacked cards.
 
 ## 7. Intensity contract
 
@@ -128,7 +133,8 @@ Components consume semantic tokens, never raw hex:
 
 - The photograph is always the region's assertive element. Nothing competes with it.
 - The flash cut and the Reversal are the only two signature motions. Never run
-  both in the same moment.
+  both in the same moment. The diary's section moves (line builds, parting
+  lines, curtains) are the motion layer: they guide, they don't assert.
 - At most one sula element per region. Grain and the room colour are atmosphere.
 - Controls, counters, and captions are quiet.
 
@@ -136,12 +142,18 @@ Components consume semantic tokens, never raw hex:
 
 Motion should feel like a camera, not a screensaver: flash, shutter, advance.
 
-- Use flash cuts, a hard surface cut, the print thrown off the pile, and the Reversal.
-- Avoid ambient loops, parallax, cursor trails, glow stacks, and generic fades.
-- Reduced motion removes the flash, the throw, and the Reversal animation. Cuts
-  become immediate. All content and order stay the same.
-- The first photo is usable without JavaScript. Only the active and next prints
-  load eagerly.
+- Use flash cuts, a hard surface cut, the print thrown off the pile, the Reversal,
+  and on the diary, curtains (top → bottom, `--d-ease`) and scroll-linked builds.
+- Avoid cursor trails, glow stacks, generic fades, and decoration that moves on its
+  own. The diary's only exceptions are the plan's own: the destaques strip drifts
+  (pauses off-screen), the hero columns leave at three speeds, the curtain's photo
+  shifts 45 px in its frame, and the seleção gallery runs on a timer with pause
+  controls. Don't add more.
+- Reduced motion removes the flash, the throw, the Reversal animation, the lag,
+  the ripple, the drift and the timer. Cuts become immediate; the curtain becomes a
+  still column. All content and order stay the same.
+- The first view is usable without JavaScript. Only the hero's three photos (the
+  active and next prints in the Pile) load eagerly.
 - No autoplay audio. No sound in v1.
 
 ## 9. Accessibility
@@ -150,6 +162,9 @@ WCAG 2.2 AA is the floor.
 
 - The Pile works with keyboard, touch, pointer, and screen readers. It has visible
   previous/next controls, and it announces position ("7 de 66") and the caption.
+- The diary has one `h2` per section (nav jumps focus it) and passes axe-core at
+  WCAG 2.2 AA on desktop, phones and reduced motion. Keep it that way: re-run it
+  after touching a section.
 - Flash cuts respect WCAG 2.3.1: at most three flashes per second, capped
   brightness, and never a saturated red flash.
 - Visible focus uses Cobalto Luz. Targets are 44 × 44 CSS px where practical.
@@ -166,7 +181,11 @@ workflow as ART'hur:
 3. AlignUI
 4. React Bits
 5. Aceternity UI
-6. Custom code for the Pile, the flash cut, the Reversal, and the date stamp
+6. Custom code for the Pile, the flash cut, the Reversal, the date stamp, and the
+   diary sections
+
+Adopted so far: React Bits RippleDistortion (hero hover), Lenis (desktop scroll),
+Base UI under the shadcn-style primitives.
 
 Before adding a component, document its storytelling job, intensity layer, the
 region's existing sula, keyboard/touch/reduced-motion/SSR behaviour, and why it
@@ -179,7 +198,7 @@ don't add it. `docs/03-DESIGN-SYSTEM.md` §6 holds the current decisions.
   major version, and read the version-matched guide in `node_modules/next/dist/docs/`
   before editing Next.js behaviour.
 - Server Components by default. Client boundaries only for the Pile, the flash
-  cut, and the Reversal.
+  cut, the Reversal, and one component per diary section.
 - Use `next/image` for every photo.
 
 ## 12. Work sequence

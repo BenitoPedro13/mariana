@@ -4,14 +4,19 @@
 
 | Route | Surface | Job | Sula |
 | --- | --- | --- | --- |
-| `/` | Follows the active photo | The Pile: her photos one at a time | The active photo |
+| `/` | Noite | The diary: the home, one long scroll of sections (§2) | The photo in view |
+| `/pilha` | Follows the active photo | The Pile: her photos one at a time (§2.9) | The active photo |
 | `/tudo` | Noite | Contact sheet of everything. The complete low-motion alternative | None |
 | `/foto/[slug]` | Follows the photo | One photo, full caption, date, series, prev/next | The photo |
 | `/sobre` | Noite | `>:(` and whatever she writes. Nothing invented | `>:(` |
+| `/lab` | Noite | The four home studies, kept for comparison. Not linked | Varies |
 | `404` | Noite | `essa foto não existe >:(` and a link to `tudo` | None |
 
-The header is on every page and has three items: `anairam` (home), `tudo`,
-`sobre`. The footer has `@anairamodarnoc` and the gift line.
+On the home, the header is fixed and has five columns: `anairam` (home), "fotografia /
+diário com flash", the two mood squares, the section nav (`sobre · fotos ·
+legendas · seleção · índice`), and the years. Under 1024 px it's the name, the
+squares and a menu. It's transparent over the hero and a Noite bar after it.
+The other pages keep their own header: `anairam`, `tudo`, `sobre`.
 
 No search, contact form, newsletter, cookie banner (no tracking cookies), or
 language switch in v1. `/foto/[slug]` pages exist so every photo has a URL you
@@ -25,9 +30,38 @@ page, which links to `/tudo?serie=…`. They are not a separate route in v1. The
 selected series chip is an ink fill plus an underline, because the light filter
 next to it already holds the screen's one magenta.
 
-## 2. The home: the Pile
+## 2. The home: the diary
 
-### Composition (desktop)
+The OFFFORM study's technique and pacing with her palette, type, name and
+Reversal (`docs/tasks/TASK-offform-direction.md`, where §3 has every number
+and §9 what was built). One long scroll. UI text is DM Mono at 11 px, lowercase,
+with 0.5 px Flash hairlines and 7 or 10 px squares as the only marks. Every
+section is a Server Component page handing data to one client component in
+`components/diario/`.
+
+| # | Section | Component | What happens |
+| --- | --- | --- | --- |
+| S0 | Preloader | `hero.tsx` | The hero's centre line in its loading state: `NN%`, the line growing, a square on its tip. At 100 % one flash, then the room opens |
+| S1 | Header | `header.tsx` | Fades in after the intro. The active section is Rosa |
+| S2 | Hero | `hero.tsx` | Three photos edge to edge, revealed top → bottom 80/160/240 ms apart; the centre line with each photo's date and light. They leave at three speeds; the line holds until the next section. Hover: React Bits RippleDistortion |
+| S3 | Sobre | `about-strip.tsx` | `sobre ——— anairam ■` builds; pinned, the list rises through a fixed square and each line parts around it |
+| S4 | Destaques | `about-strip.tsx` | A drifting, draggable strip of bottom-cropped frames; hover opens the crop |
+| S5 | Fotos | `roster.tsx` | Every photo as a row (number, her caption, date), `noite / dia` switch, a preview that follows the pointer |
+| S6 | Legendas | `curtain.tsx` | One photo parts down the middle; three captions rise through the gap, every line parting around the small print |
+| S7 | Seleção | `gallery.tsx` | Five photos on a timer (hold 2.3 s, curtain 0.95 s), with anterior / pausar / próxima |
+| S8 | Índice | `index-list.tsx` | The diary by month; hover swaps the sticky photo |
+| S10 | Footer | `footer.tsx` | Her name in ASCII: Bodoni letters masking rows of micro type; the letter under the pointer parts |
+
+S9 (contact) was dropped: she has no clients, so there is nothing to book.
+Phones keep every section; pinned stages become plain scroll except the
+curtain, which pins everywhere.
+
+### 2.9 The Pile (`/pilha`)
+
+The earlier home, kept for comparison. It's still the flash-cut showcase.
+
+
+#### Composition (desktop)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -53,14 +87,14 @@ next to it already holds the screen's one magenta.
 - Order: newest first by default, as the diary reads today. Within a series,
   chronological, as the night happened.
 
-### Composition (mobile)
+#### Composition (mobile)
 
 Same hierarchy, not stacked cards. The print fills the width minus the gutter,
 the counter and prev/next sit in a bottom bar within thumb reach, and the caption
 sits under the print and scrolls with the page if long. The header collapses to
 the `i.` monogram and a `tudo` link.
 
-### Input
+#### Input
 
 One gesture = one print. Never scrub.
 
@@ -85,9 +119,19 @@ shared link keeps your place without polluting history.
 ## 3. Signature moments
 
 These make the site feel like her, and they need the most craft. There are
-exactly three.
+exactly three. On the diary home, the preloader's single flash stands in for
+the first exposure; the section moves (line builds, parting lines, curtains)
+are the motion layer that guides, not signatures.
 
-### 3.1 The first exposure (home, full page load only)
+### 3.0 The preloader (diary home, full page load only)
+
+The counter and the line run on real progress (images loaded, with a 1.5 s
+floor and a 6 s safety). At 100 % one flash (the §3.3 rules: capped, rate
+limited, never with reduced motion), and the hero curtains open at its peak.
+With the flash turned off it's a plain cut. Without JavaScript, or with
+reduced motion, the hero is simply there at 100 %.
+
+### 3.1 The first exposure (`/pilha`, full page load only)
 
 1. The screen is Noite. The header is already present, because content is never
    hidden behind an intro.
@@ -109,8 +153,9 @@ pass it.
 
 - Timing: 700 ms per letter, 45 ms stagger from the outside in. It holds as
   `mariana` for 1.2 s, then returns.
-- Triggers: first exposure, then hover or focus of the wordmark (once per hover,
-  and not again until the pointer leaves).
+- Triggers: the end of the diary intro (or the first exposure on `/pilha`),
+  then hover or focus of the wordmark (once per hover, and not again until the
+  pointer leaves).
 - It never runs during a flash cut.
 - Screen readers hear "Mariana, página inicial" once. The letters are
   `aria-hidden`.
@@ -119,7 +164,7 @@ pass it.
 
 ### 3.3 The flash cut
 
-Every photo change on `/` and `/foto/[slug]`:
+Every photo change on `/pilha` and `/foto/[slug]`:
 
 1. Input is received and the current print starts its throw (or, for the
    buttons and keys, a short 8° slide off in the travel direction).
@@ -164,6 +209,14 @@ WCAG 2.2 AA is the minimum.
 - A persistent `flash: on / off` control in the footer lets anyone turn it off
   without an OS setting, remembered per browser. It's labelled "desligar flash".
 
+### Things that move by themselves
+
+Only two: the destaques strip drifts, and the seleção gallery changes photo
+every 3–4 s. The strip pauses off-screen and stops for reduced motion; the
+gallery runs only while its stage is on screen, holds on hover or focus, and
+has `anterior / pausar / próxima` (WCAG 2.2.2). With reduced motion neither
+moves on its own.
+
 ### Reduced motion
 
 `prefers-reduced-motion: reduce`, or flash off plus reduced motion:
@@ -173,6 +226,11 @@ WCAG 2.2 AA is the minimum.
 - The Pile keeps its stacked look (static angles) and all inputs.
 - The wordmark shows `anairam`. Focus reveals `mariana` as plain text in a
   tooltip-free way: the letters swap instantly.
+- The diary: no preloader (the hero is there at 100 %), no column lag, no
+  ripple, no parting lines or preview lerp; the curtain becomes a still column
+  of the same photos and captions; the gallery and strip don't move by
+  themselves. Scroll-linked moves (line builds, the sobre list rising) stay,
+  since they only follow the reader's own scrolling.
 
 ### Screen readers
 
@@ -190,11 +248,20 @@ WCAG 2.2 AA is the minimum.
 - A skip link goes to `tudo` ("pular para todas as fotos").
 - Visible focus uses Cobalto Luz (`03-DESIGN-SYSTEM.md` §1).
 
+- On the diary, each section has one `h2` (the nav jumps focus it), captions
+  are real text with `lang`, the ASCII footer is one `img` named "Mariana",
+  and the parted lines in S3 and S6 are `aria-hidden` copies of one readable
+  text. axe-core (WCAG 2.0–2.2 A/AA) is clean on desktop, phones and reduced
+  motion (task §9, step 8).
+
 ### Without JavaScript
 
-The home renders the first photo (or the one in `?f=`, through the proxy), its
-caption, and plain links to `anterior`, `próxima` (as `/foto/…` URLs), and
-`tudo`. Everything is reachable.
+The diary renders every section with its photos and captions; the hero shows
+at 100 %, the curtain as its still column, the switch and the gallery on their
+first state (every photo is still reachable through the rows, the index and
+`/tudo`). The Pile renders the first photo (or the one in `?f=`, through the
+proxy), its caption, and plain links to `anterior`, `próxima` (as `/foto/…`
+URLs), and `tudo`.
 
 ## 6. Craft details (the awards level)
 
@@ -214,3 +281,8 @@ What separates this from a template is the finish, not the effects:
 - Captions keep her line breaks exactly.
 - The Reversal pivots on the one letter that doesn't move. Someone will notice,
   and that's the point.
+- On the diary, numbers are the photo's place in the diary everywhere (hero
+  ticks, strip, rows, seleção), so `07` is the same photo on every screen.
+- The curtain's captions sit on whole pixels, so the seam where a line parts
+  never shows as a hairline through a letter.
+- The footer's name is her name backwards made of her name backwards.

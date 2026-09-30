@@ -78,6 +78,9 @@ which passes against both the sheet and the photo.
 | Radius | `0` | Prints are cut paper. The only exception is the focus ring, which follows the element |
 | Hairline | 1 px `--hairline` | Print border, dividers |
 | Z layers | `photo 0 · stamp 1 · chrome 10 · flash 20 · dialog 30` | The flash sits above the chrome so the whole screen exposes |
+| Diary gutter | `--d-gutter`: 20 px, 16 px ≤ 1024 px | The diary's page edge (scoped to `[data-diario]`) |
+| Diary hairline | `--d-hair`: 0.5 px Flash | Every line on the diary |
+| Diary rows | 48 px, 40 px ≤ 1024 px; number column 60 px | S5 fotos, S8 índice |
 
 ## 3. Motion tokens
 
@@ -92,8 +95,20 @@ which passes against both the sheet and the photo.
 | `--cut` | 0 ms | Surface change night↔day. Always a cut |
 | Flash rate limit | ≥ 334 ms between flashes | ≤ 3 per second (WCAG 2.3.1) |
 
+The diary adds:
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--d-ease` | `cubic-bezier(0.76, 0, 0.24, 1)` | Every curtain, crop and square on the diary |
+| Curtain | 650 ms (hero, strip crop), 950 ms (seleção) | Reveals top → bottom; closes bottom → top |
+| Glide | 900 ms, easeInOutQuart, under a 72 px header | Nav jumps (Lenis on desktop, native smooth scroll elsewhere) |
+| Follow | lerp 0.16 per frame | The S5 preview, the footer's parting rows |
+| Hold | 1000 ms once (S3 pin), 2300 ms per photo (S7) | The page pausing; the gallery's dwell |
+| Glow | `0 0 5px` Rosa 42 %, `0 0 11px` Rosa 20 %, 280 ms | `.d-glow`: hover, focus, active |
+
 Under `prefers-reduced-motion: reduce`, every token above resolves to 0 ms and
-the flash never renders.
+the flash never renders. On the diary, anything that isn't following the
+reader's own scroll stops (`04-UX-AND-MOTION.md` §5).
 
 ## 4. Intensity contract
 
@@ -121,6 +136,13 @@ A **region** is one bounded attention area.
 | `/tudo` | Filters, links | Contact sheet grid | Focus/hover only | None | Flat surface |
 | `/foto/[slug]` | Back, prev/next, caption | Single print | Flash cut on prev/next | The photo | Surface follows photo |
 | `/sobre` | Instagram link | One column | None | `>:(` at display size | Flat Noite |
+| Diary S0–S2: preloader, hero | Header, corner texts, `ver todas` | The centre line and its ticks | The one flash, the curtain reveal, column lag | The three photos | Noite |
+| Diary S3–S4: sobre, destaques | The paragraph, the meta | Line builds, the list | The list parting, the strip's drift | The strip's photos | Noite |
+| Diary S5: fotos | Switch, count | Rows | Switch build, the preview following | The preview print | Noite |
+| Diary S6: legendas | Label, counter | The three captions | The split, captions rising | The big photo, then the small print | Noite |
+| Diary S7: seleção | Controls, meta, `ver foto` | Info column, progress | The curtain on its timer | The photo in the frame | Noite |
+| Diary S8: índice | Meta | Month rows | None beyond hover | The month's photo | Noite |
+| Diary footer | Columns, links | Four columns | The letters parting | Her name in ASCII | Noite |
 
 ## 5. Component inventory
 
@@ -139,6 +161,16 @@ A **region** is one bounded attention area.
 | `Dialog` | Core | USVA, or shadcn/ui as fallback | Not in v1. Reserved if a lightbox is ever needed on `/tudo` |
 | `VisuallyHidden` | Core | shadcn/ui utilities | Live-region announcements for the Pile |
 | `ContactSheet` | Pattern | Custom CSS grid | Plain grid of links. No library. |
+| `LineBuild` | Pattern | Custom | `a ——— b ■`, grows with `--p` (the parent drives it) |
+| `DiarioHero` | Pattern + motion | Custom on `motion` | S0 preloader and S2 hero, one element |
+| `RippleImage` | Motion | React Bits RippleDistortion (ogl) over `next/image` | Hero hover only; fine pointers, ≥ 768 px, motion allowed |
+| `AboutStrip` | Pattern | Custom | S3 and S4 on one sticky stage |
+| `Roster` | Pattern | Custom | S5 rows, the switch, the pointer preview |
+| `Curtain` | Pattern + motion | Custom | S6, with a still version for reduced motion and no-JS |
+| `Gallery` | Pattern + motion | Custom on `motion` | S7, timed, with pause controls |
+| `IndexList` | Pattern | Custom | S8, by month |
+| `DiarioFooter` | Brand | Custom canvas | S10, the ASCII name |
+| `SmoothScroll` | Core | Lenis | Desktop only; `to`, `stop`, `start`, `gliding` |
 
 ## 6. Library decisions
 
@@ -173,6 +205,13 @@ default look.
 - **Masonry, Image Trail, Flying Posters**: *reject.* Collage and screensaver
   energy. They'd compete with the photo, which is the sula.
 - **Noise**: *reject.* A static SVG grain does the same job with no runtime cost.
+- **RippleDistortion**: *adopted (hero hover).* Benito picked it for the three
+  hero columns. Motion layer; the photo stays the sula. It's ported to TS in
+  `components/react-bits/` with `grayscale` and `tint` off (it may distort her
+  photo in motion, never recolour it), an `onReady` so the real `<img>` shows
+  until the texture is drawn, and it stops drawing when idle. It mounts only
+  for fine pointers ≥ 768 px with motion allowed; SSR, touch, keyboard and
+  reduced motion get the plain `next/image`.
 
 ### Aceternity UI: none in v1
 
@@ -187,9 +226,10 @@ and no data UI. Revisit if a CMS admin surface is ever built.
 
 ### Motion runtime
 
-`motion` (motion.dev) for the throw and the Reversal (layout animations with
-spring physics). The flash cut is plain CSS on one element. No GSAP. One motion
-library is enough.
+`motion` (motion.dev) for the throw, the Reversal, and the diary's timed
+curtains. The flash cut is plain CSS on one element. Scroll-driven moves on
+the diary are hand-written (one rAF per section writing transforms). Lenis
+smooths the wheel on desktop only. No GSAP.
 
 ## 7. States
 

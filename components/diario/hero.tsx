@@ -217,7 +217,7 @@ export function DiarioHero({ photos, counts }: { photos: Photo[]; counts: Counts
                 return (
                   <span key={i} className="absolute top-0 flex -translate-x-1/2 flex-col items-center gap-1.5" style={{ left: `${at * 100}%` }}>
                     <span className="block h-[5px] w-px bg-flash" />
-                    <span className="text-[10px] whitespace-nowrap">{label}</span>
+                    <span className="whitespace-nowrap">{label}</span>
                   </span>
                 );
               })}

@@ -97,12 +97,13 @@ her originals ──► scripts/ingest.ts ──► content/photos/*.jpg ──�
 
 | Route | Rendering | Client islands |
 | --- | --- | --- |
-| `/` | Static | `Pile` (includes FlashCut), `Wordmark` |
+| `/` | Static | One per diary section (`components/diario/`), `Wordmark`, Lenis on desktop |
+| `/pilha` | Static | `Pile` (includes FlashCut), `Wordmark` |
 | `/tudo` | Static | `ToggleGroup` filter |
 | `/foto/[slug]` | Static (`generateStaticParams`) | prev/next FlashCut, `Wordmark` |
 | `/sobre` | Static | `Wordmark` |
 
-- `/?f=07` is rewritten by `proxy.ts` to the prerendered `/f/07`, keeping the
+- `/pilha?f=07` is rewritten by `proxy.ts` to the prerendered `/f/07`, keeping the
   address. A shared link opens on its print without JavaScript, and every start
   frame is still static. Out-of-range frames fall back to the first print.
 - The server renders the Pile's top print and the next two as real `<img>`s.
@@ -110,26 +111,34 @@ her originals ──► scripts/ingest.ts ──► content/photos/*.jpg ──�
 - The first print is the LCP element: `priority`, a correct `sizes`, and a blur
   placeholder.
 - The Pile holds only an index and a direction. No global store.
+- The diary: `app/(diario)/page.tsx` is a Server Component that picks the
+  photos for each section and hands them to one client component per section.
+  Each runs its scroll work in a single rAF and writes transforms and CSS
+  variables directly, so scrolling never re-renders React. Only the hero's
+  three photos load eagerly; everything else is lazy or loads when its section
+  is near (the S5 previews).
 
-### Planned layout
+### Layout (as built)
 
 ```
 app/
-  layout.tsx          fonts, header, footer, data-surface root
-  page.tsx            the Pile (server: data → <Pile photos={…} />)
-  f/[frame]/page.tsx  the Pile from frame N, reached through proxy.ts
-  tudo/page.tsx
-  foto/[slug]/page.tsx
-  sobre/page.tsx
-  not-found.tsx
-proxy.ts             ?f=NN → /f/NN
+  layout.tsx            fonts, the inline first-paint script, FlashLayer
+  (diario)/             the home: layout (Lenis, cursor) and page.tsx (S0–S10)
+  (site)/               pilha/, f/[frame]/, tudo/, foto/[slug]/, sobre/
+  lab/                  the four home studies
+proxy.ts                /pilha?f=NN → /f/NN
 components/
-  brand/   Wordmark, DateStamp, FrameCounter
-  pile/    Pile, Caption, FlashLayer, FlashLink, hooks.ts
-  site/    header, footer, ContactSheet, Surface, FlashToggle
-  ui/      USVA / shadcn output (Button, ToggleGroup, Chip)
-content/   types.ts, photos.ts, series.ts, order.ts, check.ts, photos/*.jpg
-scripts/   ingest.ts
+  brand/      Wordmark, use-reversal, DateStamp, FrameCounter
+  diario/     header, hero, about-strip, line-build, roster, curtain,
+              gallery, index-list, footer, ripple-image, smooth-scroll,
+              cursor, marks
+  lab/        the four studies and their stages
+  pile/       Pile, Caption, FlashLayer, FlashLink, hooks.ts
+  react-bits/ RippleDistortion (MIT, ported to TS)
+  site/       header, footer, ContactSheet, Surface, FlashToggle
+  ui/         Button, Chip, ToggleGroup (shadcn-style, on Base UI)
+content/      types.ts, photos.ts, series.ts, order.ts, check.ts
+lib/          flash, flash-preference, motion-preference, print, utils
 ```
 
 Per the global conventions, every hook sits behind a named custom hook in a
